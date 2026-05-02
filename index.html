@@ -3,918 +3,650 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0d0e14">
-<title>Noren — Asakusa</title>
+<meta name="theme-color" content="#0b1120">
+<title>Noren Asakusa | Local Experiences</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&family=Noto+Sans+KR:wght@300;400&family=Noto+Sans+SC:wght@300;400&family=Noto+Serif+JP:wght@200;300;400&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:     #0d0e14;
-  --navy:   #1a2d4a;
-  --linen:  #ede8dc;
-  --gold:   #c8a85c;
-  --gold2:  #8a7040;
-  --cream:  #f0e8d4;
-  --dim:    #9a8c74;
-  --faint:  #4a4232;
-  --border: rgba(200,168,92,.13);
-  --soft:   rgba(200,168,92,.07);
+  --bg: #070c18;
+  --bg-soft: #0f1b34;
+  --panel: rgba(17, 28, 53, 0.68);
+  --line: rgba(163, 186, 231, 0.22);
+  --gold: #d7b56d;
+  --ink: #ebf1ff;
+  --muted: #9ab0da;
+  --teal: #4fd3c4;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--bg); }
 
 body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--bg);
-  color: var(--cream);
+  font-family: Inter, "Noto Sans JP", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 80% -10%, rgba(79, 211, 196, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 8% 20%, rgba(215, 181, 109, 0.12) 0%, transparent 45%),
+    linear-gradient(180deg, #080f1f 0%, #070c18 100%);
   min-height: 100vh;
-  max-width: 430px;       /* スマホ幅に固定 */
+}
+
+body.lang-ja { font-family: "Noto Sans JP", Inter, sans-serif; }
+body.lang-zh { font-family: "Noto Sans SC", Inter, sans-serif; }
+body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
+
+.shell {
+  width: min(1120px, calc(100vw - 32px));
   margin: 0 auto;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-body.lang-zh {
-  font-family: 'Noto Sans SC', 'Noto Sans JP', sans-serif;
-}
-body.lang-ko {
-  font-family: 'Noto Sans KR', 'Noto Sans JP', sans-serif;
-}
-body.lang-zh .panel-kanji,
-body.lang-zh .guide-name,
-body.lang-zh .hero-location,
-body.lang-zh .loc-address,
-body.lang-zh .service-name {
-  font-family: 'Noto Serif SC', 'Noto Serif JP', serif;
-}
-body.lang-ko .panel-kanji,
-body.lang-ko .guide-name,
-body.lang-ko .hero-location,
-body.lang-ko .loc-address,
-body.lang-ko .service-name {
-  font-family: 'Noto Serif JP', serif;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
 }
 
-/* 縦縞テクスチャ */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(
-    90deg, transparent 0, transparent 24px,
-    rgba(200,168,92,.012) 24px, rgba(200,168,92,.012) 25px
-  );
-  pointer-events: none; z-index: 0;
-}
-
-/* ── 言語バー ── */
 .lang-bar {
-  position: relative; z-index: 10;
-  display: flex; justify-content: flex-end; gap: 2px;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--soft);
-  /* iOS safe area */
-  padding-top: max(14px, env(safe-area-inset-top));
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: max(14px, env(safe-area-inset-top)) 0 10px;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(180deg, rgba(7,12,24,.92) 0%, rgba(7,12,24,.38) 74%, transparent 100%);
 }
+
 .lang-btn {
-  background: none; border: none;
-  color: var(--faint);
-  font-family: inherit;
-  font-size: 12px; letter-spacing: .06em; cursor: pointer;
-  padding: 10px 8px;
-  min-height: 44px;       /* 最小タップ領域 */
   min-width: 44px;
-  justify-content: center;
-  display: flex; align-items: center;
-  transition: color .2s;
-}
-.lang-btn.active, .lang-btn:active { color: var(--gold); }
-.lang-btn + .lang-btn::before {
-  content: '·'; margin-right: 4px; color: var(--soft); pointer-events: none;
+  min-height: 44px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0 12px;
+  font-size: 12px;
+  letter-spacing: .05em;
+  cursor: pointer;
 }
 
-/* ═══════════════
-   ヒーロー
-═══════════════ */
+.lang-btn.active {
+  color: var(--ink);
+  border-color: rgba(215, 181, 109, .5);
+  background: rgba(215, 181, 109, .1);
+}
+
 .hero {
-  position: relative; z-index: 1;
-  min-height: 420px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: flex-end;
-  padding: 0 0 48px;
-  text-align: center; overflow: hidden;
-  background: radial-gradient(ellipse 90% 55% at 50% 0%,
-    rgba(26,45,74,.5) 0%, transparent 65%),
-    linear-gradient(180deg, #0e1018 0%, var(--bg) 100%);
-}
-
-/* ═══════════════
-   のれん 三枚
-═══════════════ */
-.noren { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
-
-.noren-rod {
-  height: 8px;
-  background: linear-gradient(90deg,
-    transparent 0%, #2a1a08 5%, #5a3518 22%,
-    #7a4e24 50%, #5a3518 78%, #2a1a08 95%, transparent 100%
-  );
-  box-shadow: 0 3px 16px rgba(0,0,0,.5);
-}
-
-.noren-panels { display: flex; width: 100%; }
-
-.noren-panel {
-  display: flex; flex-direction: column;
-  align-items: center; padding: 16px 8px 0;
-}
-
-.panel-side {
-  flex: 1;
-  background: linear-gradient(180deg,
-    var(--navy) 0%, rgba(26,45,74,.9) 58%, transparent 100%
-  );
-  min-height: 220px;
-}
-
-.panel-center {
-  flex: 0 0 36%;
-  background: linear-gradient(180deg,
-    rgba(237,232,220,.95) 0%, rgba(237,232,220,.7) 55%, transparent 100%
-  );
-  min-height: 240px;
-  padding-top: 20px;
-  border-left:  1px solid rgba(237,232,220,.1);
-  border-right: 1px solid rgba(237,232,220,.1);
-}
-
-.kamon { width: 44px; height: 44px; margin-bottom: 10px; }
-
-.panel-kanji {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 40px; font-weight: 200;
-  color: rgba(237,232,220,.76);
-  line-height: 1; margin-top: 4px;
-}
-
-.panel-knot { margin-bottom: 8px; }
-
-.panel-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px; font-weight: 300; letter-spacing: .2em;
-  color: var(--navy); text-transform: uppercase; margin-bottom: 5px;
-}
-.panel-sub-ja {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 10px; font-weight: 200; letter-spacing: .32em;
-  color: rgba(26,45,74,.62); margin-bottom: 3px;
-}
-.panel-sub-en {
-  font-size: 9px; letter-spacing: .2em;
-  color: rgba(26,45,74,.42); text-transform: uppercase;
-}
-
-/* ヒーロー下部 */
-.hero-content { position: relative; z-index: 3; padding: 0 24px; }
-
-.status-dot {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 10px; letter-spacing: .2em;
-  color: var(--dim); text-transform: uppercase; margin-bottom: 8px;
-}
-.dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: #3d9060;
-  box-shadow: 0 0 7px rgba(61,144,96,.7);
-  animation: pulse 2.5s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity:1; } 50% { opacity:.35; }
-}
-.hero-location {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 11px; font-weight: 200;
-  letter-spacing: .38em; color: var(--gold2);
-}
-
-.hero-vertical {
-  position: absolute; right: 8px; bottom: 52px; z-index: 3;
-  writing-mode: vertical-rl;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 9px; font-weight: 200; letter-spacing: .32em;
-  color: rgba(200,168,92,.2);
-}
-
-/* ═══════════════
-   区切り線
-═══════════════ */
-.divider {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; gap: 10px;
-  padding: 0 24px; margin: 36px 0 28px;
-}
-.divider-line {
-  flex: 1; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-}
-.divider-kiku {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 9px; letter-spacing: .26em;
-  color: var(--gold2); text-transform: uppercase; white-space: nowrap;
-}
-.divider-kiku::before,
-.divider-kiku::after { content: '◆'; font-size: 4px; opacity: .5; }
-
-/* ═══════════════
-   案内人
-═══════════════ */
-.guide {
-  position: relative; z-index: 1;
-  padding: 0 24px 36px;
-  display: flex; align-items: flex-start; gap: 14px;
-}
-.guide-frame {
-  width: 52px; height: 52px; flex-shrink: 0;
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; background: rgba(26,45,74,.15); position: relative;
-}
-.guide-frame::before, .guide-frame::after {
-  content: ''; position: absolute; width: 7px; height: 7px;
-  border-color: var(--gold2); border-style: solid; opacity: .4;
-}
-.guide-frame::before { top:-1px; left:-1px; border-width: 1px 0 0 1px; }
-.guide-frame::after  { bottom:-1px; right:-1px; border-width: 0 1px 1px 0; }
-
-.guide-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 400; letter-spacing: .05em;
-  color: var(--cream); margin-bottom: 3px;
-}
-.guide-title {
-  font-size: 11px; color: var(--dim); letter-spacing: .05em;
-  margin-bottom: 8px; font-weight: 300; line-height: 1.5;
-}
-.guide-cred {
-  font-size: 10px; letter-spacing: .07em; color: var(--gold);
-  border-left: 1.5px solid rgba(26,45,74,.7); padding-left: 8px; line-height: 1.7;
-}
-
-/* ═══════════════
-   体験メニュー
-═══════════════ */
-.services-wrap { position: relative; z-index: 1; padding: 0 24px 8px; }
-
-.section-label {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 9px; letter-spacing: .32em; color: var(--gold2);
-  text-transform: uppercase; margin-bottom: 18px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--soft); }
-
-.service {
-  display: grid; grid-template-columns: 1fr auto;
-  align-items: start; padding: 18px 0;
-  border-bottom: 1px solid var(--soft); gap: 12px;
-  /* タップしやすい最小高さ */
-  min-height: 64px;
-}
-.service:first-of-type { border-top: 1px solid var(--soft); }
-
-.service-name {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 15px; font-weight: 400; letter-spacing: .03em;
-  color: var(--cream); margin-bottom: 2px;
-}
-.service-en {
-  font-size: 10px; color: var(--faint); letter-spacing: .07em;
-  font-weight: 300; margin-bottom: 4px; text-transform: uppercase;
-}
-.service-desc { font-size: 11px; color: var(--faint); letter-spacing: .02em; line-height: 1.6; }
-
-.service-price-wrap { text-align: right; padding-top: 2px; }
-.service-price {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px; font-weight: 300; color: var(--gold);
-  letter-spacing: .04em; white-space: nowrap;
-}
-.service-yen { font-size: 10px; color: var(--gold2); letter-spacing: .04em; margin-top: 1px; }
-.service-tag {
-  display: inline-block; font-size: 8px; letter-spacing: .18em;
-  color: var(--gold); text-transform: uppercase;
-  border: 1px solid rgba(200,168,92,.3); padding: 2px 6px; margin-bottom: 4px;
-}
-
-/* ═══════════════
-   CTA
-═══════════════ */
-.cta-wrap { position: relative; z-index: 1; padding: 40px 24px 28px; }
-
-.cta-btn {
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  background: var(--navy);
-  color: var(--linen);
-  text-decoration: none;
-  padding: 0 24px;
-  height: 58px;          /* タップしやすい高さ */
-  font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
-  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
-  transition: background .25s; margin-bottom: 12px;
-  border: 1px solid rgba(237,232,220,.08);
   position: relative;
-  -webkit-tap-highlight-color: transparent;
-}
-.cta-btn::before, .cta-btn::after {
-  content: ''; position: absolute; width: 10px; height: 10px;
-  border-color: rgba(200,168,92,.3); border-style: solid;
-}
-.cta-btn::before { top:4px; left:4px; border-width:1px 0 0 1px; }
-.cta-btn::after  { bottom:4px; right:4px; border-width:0 1px 1px 0; }
-.cta-btn:active { background: #1f3358; }
-
-.cta-sub {
-  font-size: 10px; color: var(--gold2);
-  letter-spacing: .2em; text-align: center; text-transform: uppercase;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  overflow: hidden;
+  min-height: 560px;
+  background:
+    linear-gradient(130deg, rgba(9,16,33,.94) 0%, rgba(10,22,48,.7) 55%, rgba(12,28,54,.82) 100%),
+    radial-gradient(circle at 72% 24%, rgba(79, 211, 196, .22) 0%, transparent 52%);
 }
 
-/* ═══════════════
-   場所
-═══════════════ */
-.location-wrap { position: relative; z-index: 1; padding: 0 24px 44px; }
-.location-inner {
-  border: 1px solid var(--soft); padding: 20px 18px 20px 22px; position: relative;
-}
-.location-inner::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg, transparent, var(--navy) 30%, var(--navy) 70%, transparent);
-  opacity: .5;
-}
-.loc-label { font-size: 9px; letter-spacing: .32em; color: var(--gold2); text-transform: uppercase; margin-bottom: 10px; }
-.loc-address {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px; font-weight: 300; line-height: 1.9; color: var(--cream);
-}
-.loc-address small { font-size: 11px; color: var(--dim); font-family: 'Noto Sans JP', sans-serif; font-weight: 300; }
-.loc-access {
-  margin-top: 10px; font-size: 11px; color: var(--dim);
-  letter-spacing: .05em; line-height: 1.7;
-  border-top: 1px solid var(--soft); padding-top: 10px;
+.hero-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* ═══════════════
-   フッター
-═══════════════ */
+.hero-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(7,12,24,.92) 22%, rgba(7,12,24,.2) 68%, rgba(7,12,24,.84) 100%),
+    url("hero.png") center / cover no-repeat;
+  opacity: .84;
+}
+
+.hero-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7,12,24,.08) 0%, rgba(7,12,24,.84) 82%),
+    radial-gradient(circle at 76% 30%, rgba(215, 181, 109, .22) 0%, transparent 30%);
+}
+
+.hero-gate {
+  position: absolute;
+  right: -44px;
+  bottom: -16px;
+  width: min(58vw, 520px);
+  opacity: .35;
+}
+
+.hero-gate svg { width: 100%; height: auto; display: block; }
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  padding: clamp(28px, 6vw, 62px);
+  max-width: 670px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--teal);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-bottom: 18px;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px rgba(79, 211, 196, .8);
+}
+
+h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(42px, 7vw, 72px);
+  line-height: .95;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.hero-sub {
+  color: #c4d3f3;
+  line-height: 1.75;
+  max-width: 58ch;
+  margin-bottom: 24px;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+
+.btn-primary {
+  color: #0a1328;
+  background: linear-gradient(135deg, #f0d086 0%, #c9a45a 100%);
+}
+
+.btn-secondary {
+  color: var(--ink);
+  border: 1px solid rgba(163, 186, 231, 0.36);
+  background: rgba(17, 28, 53, 0.55);
+}
+
+.chips {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 1px solid rgba(163, 186, 231, 0.3);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #bfd1f5;
+}
+
+.section {
+  margin-top: 28px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--panel);
+  backdrop-filter: blur(6px);
+}
+
+.section-head {
+  padding: 24px 24px 0;
+}
+
+.section-kicker {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: clamp(24px, 3.8vw, 36px);
+  font-family: "Cormorant Garamond", serif;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 24px;
+}
+
+.card {
+  border: 1px solid rgba(163, 186, 231, 0.2);
+  border-radius: 16px;
+  background: rgba(9, 18, 36, 0.65);
+  padding: 16px;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.card-name { font-weight: 600; font-size: 16px; }
+.card-price { color: var(--gold); font-weight: 600; white-space: nowrap; }
+.card-sub { color: #bfd1f5; font-size: 13px; margin-bottom: 8px; }
+.card-desc { color: #9ab0da; font-size: 14px; line-height: 1.6; }
+
+.split {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 12px;
+  padding: 0 24px 24px;
+}
+
+.panel {
+  border: 1px solid rgba(163, 186, 231, 0.2);
+  border-radius: 16px;
+  background: rgba(9, 18, 36, 0.5);
+  padding: 16px;
+}
+
+.steps { display: grid; gap: 12px; }
+.step { display: flex; gap: 10px; align-items: flex-start; }
+.step-no {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(215, 181, 109, 0.15); color: var(--gold); font-size: 12px; flex-shrink: 0;
+}
+
+.guide-name { font-size: 22px; margin-bottom: 6px; }
+.guide-meta { color: var(--muted); line-height: 1.7; font-size: 14px; }
+.guide-location { margin-top: 10px; }
+
+.bottom-cta {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(16,30,58,.7) 0%, rgba(9,18,36,.74) 100%);
+}
+
+.bottom-cta p {
+  color: #bfd1f5;
+  margin: 8px auto 16px;
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
 footer {
-  position: relative; z-index: 1; text-align: center;
-  padding: 24px 24px calc(28px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--soft);
+  text-align: center;
+  margin-top: 18px;
+  color: #7f95bf;
+  font-size: 12px;
 }
-.footer-mon { margin: 0 auto 10px; opacity: .15; }
-.footer-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px; font-weight: 300; letter-spacing: .28em;
-  color: var(--gold2); margin-bottom: 4px; text-transform: uppercase;
-}
-.footer-sub { font-size: 9px; color: var(--faint); letter-spacing: .2em; text-transform: uppercase; }
 
-/* フェードイン */
-.fade   { animation: fadeUp .8s ease both; }
-.fade-2 { animation: fadeUp .8s .15s ease both; }
-.fade-3 { animation: fadeUp .8s .3s ease both; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+@media (max-width: 900px) {
+  .hero { min-height: 520px; }
+  .hero-gate { width: 82vw; opacity: .28; right: -24px; }
+  .services, .split { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 430px) {
+  .shell { width: calc(100vw - 20px); }
+  .hero { border-radius: 20px; min-height: 500px; }
+  .hero-inner { padding: 22px 16px 24px; }
+  .section, .bottom-cta { border-radius: 16px; }
+  .section-head, .services, .split, .bottom-cta { padding-left: 16px; padding-right: 16px; }
 }
 </style>
 </head>
 <body>
+<div class="shell">
+  <div class="lang-bar" role="toolbar" aria-label="Language">
+    <button class="lang-btn active" type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button class="lang-btn" type="button" data-lang="ja" aria-pressed="false">日本語</button>
+    <button class="lang-btn" type="button" data-lang="zh" aria-pressed="false">中文</button>
+    <button class="lang-btn" type="button" data-lang="ko" aria-pressed="false">한국어</button>
+  </div>
 
-<div class="lang-bar" role="toolbar" aria-label="Language">
-  <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
-  <button type="button" class="lang-btn" data-lang="ja" aria-pressed="false">日本語</button>
-  <button type="button" class="lang-btn" data-lang="zh" aria-pressed="false">中文</button>
-  <button type="button" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</button>
-</div>
-
-<!-- のれん -->
-<div class="hero">
-  <div class="noren fade">
-    <div class="noren-rod"></div>
-    <div class="noren-panels">
-
-      <div class="noren-panel panel-side">
-        <svg class="kamon" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(237,232,220,.68)" stroke-width="1.2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(237,232,220,.35)" stroke-width=".7"/>
-          <circle cx="40" cy="18" r="6" fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <circle cx="58" cy="29" r="6" fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <circle cx="58" cy="51" r="6" fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <circle cx="40" cy="62" r="6" fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <circle cx="22" cy="51" r="6" fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <circle cx="22" cy="29" r="6" fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <circle cx="40" cy="40" r="4" fill="none" stroke="rgba(237,232,220,.28)" stroke-width=".7"/>
-        </svg>
-        <div class="panel-kanji">暖</div>
+  <section class="hero">
+    <div class="hero-art"></div>
+    <div class="hero-gate" aria-hidden="true">
+      <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(235,241,255,.55)"/>
+            <stop offset="100%" stop-color="rgba(235,241,255,0)"/>
+          </linearGradient>
+        </defs>
+        <path d="M40 162 H480 L430 126 H335 L322 94 H198 L185 126 H90 Z" fill="none" stroke="url(#g1)" stroke-width="2"/>
+        <path d="M72 190 H448" stroke="url(#g1)" stroke-width="1.5"/>
+        <rect x="112" y="192" width="20" height="132" fill="none" stroke="url(#g1)" stroke-width="1.5"/>
+        <rect x="388" y="192" width="20" height="132" fill="none" stroke="url(#g1)" stroke-width="1.5"/>
+        <rect x="242" y="198" width="36" height="112" rx="17" fill="rgba(215,181,109,.16)" stroke="url(#g1)" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="hero.eyebrow">Asakusa Local Experience Hub</span></div>
+      <h1 data-i18n="hero.title">Curated Tokyo Moments, Crafted by Locals</h1>
+      <p class="hero-sub" data-i18n="hero.sub">From hand-made soba to neighborhood sento culture, Noren creates premium micro-experiences for international travelers in Asakusa.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://t.me/toruito_claude_bot" data-i18n="hero.cta">Talk to the AI Guide</a>
+        <a class="btn btn-secondary" href="#services" data-i18n="hero.cta2">View Experiences</a>
       </div>
-
-      <div class="noren-panel panel-center">
-        <svg class="panel-knot" viewBox="0 0 50 50" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-          <path d="M25 8C18 8 14 14 14 20c0 6 4 8 11 8s11-2 11-8c0-6-4-12-11-12Z"
-                fill="none" stroke="rgba(26,45,74,.32)" stroke-width="1.2"/>
-          <path d="M25 22c-7 0-11 6-11 12s4 8 11 8 11-2 11-8-4-12-11-12Z"
-                fill="none" stroke="rgba(26,45,74,.32)" stroke-width="1.2"/>
-          <circle cx="25" cy="25" r="3" fill="none" stroke="rgba(26,45,74,.25)" stroke-width=".8"/>
-        </svg>
-        <div class="panel-title">Noren</div>
-        <div class="panel-sub-ja" data-i18n="panel.line1">Asakusa · Higashi-Komagata</div>
-        <div class="panel-sub-en" data-i18n="panel.line2">Tokyo · Japan</div>
+      <div class="chips">
+        <span class="chip" data-i18n="chip.1">English Friendly</span>
+        <span class="chip" data-i18n="chip.2">XRP Payment</span>
+        <span class="chip" data-i18n="chip.3">Walkable from Asakusa Station</span>
       </div>
+    </div>
+  </section>
 
-      <div class="noren-panel panel-side">
-        <svg class="kamon" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(237,232,220,.68)" stroke-width="1.2"/>
-          <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(237,232,220,.35)" stroke-width=".7"/>
-          <polygon points="40,16 54,24 54,40 40,48 26,40 26,24"
-                   fill="none" stroke="rgba(237,232,220,.6)" stroke-width="1"/>
-          <polygon points="40,24 50,30 50,42 40,48 30,42 30,30"
-                   fill="none" stroke="rgba(237,232,220,.35)" stroke-width=".7"/>
-          <circle cx="40" cy="36" r="4" fill="none" stroke="rgba(237,232,220,.45)" stroke-width=".8"/>
-        </svg>
-        <div class="panel-kanji">簾</div>
+  <section class="section" id="services">
+    <div class="section-head">
+      <div class="section-kicker" data-i18n="services.kicker">Experience Menu</div>
+      <h2 class="section-title" data-i18n="services.title">Signature Services (XRP)</h2>
+    </div>
+    <div class="services">
+      <article class="card">
+        <div class="card-top"><div class="card-name" data-i18n="svc.soba.name">Soba Making Experience</div><div class="card-price">10 XRP</div></div>
+        <div class="card-sub" data-i18n="svc.soba.sub">Signature</div>
+        <p class="card-desc" data-i18n="svc.soba.desc">Learn from flour to final bowl, then enjoy your own fresh soba on the spot.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div class="card-name" data-i18n="svc.tour.name">Standing Soba Tour</div><div class="card-price">5 XRP</div></div>
+        <div class="card-sub" data-i18n="svc.tour.sub">Neighborhood Walk</div>
+        <p class="card-desc" data-i18n="svc.tour.desc">Taste local favorites and hidden counters selected by an Asakusa resident.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div class="card-name" data-i18n="svc.sento.name">Sento Guide</div><div class="card-price">3 XRP</div></div>
+        <div class="card-sub" data-i18n="svc.sento.sub">Culture Etiquette</div>
+        <p class="card-desc" data-i18n="svc.sento.desc">Discover neighborhood bathhouses and enjoy them with confidence and respect.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div class="card-name" data-i18n="svc.luggage.name">Luggage Storage</div><div class="card-price">2 XRP</div></div>
+        <div class="card-sub" data-i18n="svc.luggage.sub">Travel Light</div>
+        <p class="card-desc" data-i18n="svc.luggage.desc">Drop your bags safely and explore the district without extra weight.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div class="card-name" data-i18n="svc.cafe.name">1F Cafe Bar</div><div class="card-price">2 XRP</div></div>
+        <div class="card-sub" data-i18n="svc.cafe.sub">Chill Spot</div>
+        <p class="card-desc" data-i18n="svc.cafe.desc">Relax with local drinks and connect with Asakusa's evening atmosphere.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div class="card-name" data-i18n="svc.guest.name">Guesthouse Stay</div><div class="card-price" data-i18n="svc.guest.price">On Request</div></div>
+        <div class="card-sub" data-i18n="svc.guest.sub">Overnight</div>
+        <p class="card-desc" data-i18n="svc.guest.desc">Stay overnight and wake up to a true local morning in Asakusa.</p>
+      </article>
+    </div>
+    <div class="split">
+      <div class="panel">
+        <div class="section-kicker" data-i18n="steps.kicker">How It Works</div>
+        <div class="steps">
+          <div class="step"><span class="step-no">1</span><p data-i18n="steps.1">Message the AI guide and share your date, group size, and interests.</p></div>
+          <div class="step"><span class="step-no">2</span><p data-i18n="steps.2">Receive a tailored plan and final XRP quote within minutes.</p></div>
+          <div class="step"><span class="step-no">3</span><p data-i18n="steps.3">Meet locally, pay with XRP, and enjoy your curated experience.</p></div>
+        </div>
       </div>
-
+      <div class="panel">
+        <div class="section-kicker" data-i18n="guide.kicker">Your Host</div>
+        <h3 class="guide-name">Toru</h3>
+        <p class="guide-meta" data-i18n="guide.meta">Asakusa resident and standing soba researcher. Google Local Guide Lv.7 with 13,375 points and 3M photo views.</p>
+        <p class="guide-meta guide-location" data-i18n="guide.location">Higashi-Komagata 1-chome, Sumida-ku, Tokyo<br>3 min from Asakusa Station</p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="hero-vertical" data-i18n="hero.vertical">Authentic Asakusa</div>
+  <section class="bottom-cta">
+    <div class="section-kicker" data-i18n="final.kicker">Ready To Start</div>
+    <h2 class="section-title" data-i18n="final.title">Build Your Asakusa Plan in 60 Seconds</h2>
+    <p data-i18n="final.sub">Chat with the AI concierge in EN / 日本語 / 中文 / 한국어 and get a smooth travel plan with local support.</p>
+    <a class="btn btn-primary" href="https://t.me/toruito_claude_bot" data-i18n="final.cta">Talk to the AI Guide</a>
+  </section>
 
-  <div class="hero-content fade">
-    <div class="status-dot"><span class="dot"></span><span data-i18n="hero.status">Open today</span></div>
-    <div class="hero-location" data-i18n="hero.location">Higashi-Komagata · Asakusa</div>
-  </div>
+  <footer data-i18n="footer">OpenClaw x XRPL | Noren Asakusa 2026</footer>
 </div>
-
-<!-- 案内人 -->
-<div class="divider fade-2">
-  <div class="divider-line"></div>
-  <div class="divider-kiku" data-i18n="divider.guide">Your Local Guide</div>
-  <div class="divider-line"></div>
-</div>
-
-<div class="guide fade-2">
-  <div class="guide-frame">🍜</div>
-  <div>
-    <div class="guide-name">Toru</div>
-    <div class="guide-title"><span data-i18n="guide.title1">Standing soba researcher</span><br><span data-i18n="guide.title2">Asakusa resident</span></div>
-    <div class="guide-cred"><span data-i18n="guide.cred1">Google Local Guide Lv.7</span><br><span data-i18n="guide.cred2">13,375 pts · 3M photo views</span></div>
-  </div>
-</div>
-
-<!-- 体験メニュー -->
-<div class="services-wrap fade-3">
-  <div class="section-label" data-i18n="section.experiences">Experiences</div>
-
-  <div class="service">
-    <div>
-      <div class="service-name" data-i18n="svc.soba.name">Soba Making</div>
-      <div class="service-en" data-i18n="svc.soba.sub">Hands-on workshop</div>
-      <div class="service-desc" data-i18n="svc.soba.desc">From flour to bowl — roll, cut, and eat.</div>
-    </div>
-    <div class="service-price-wrap">
-      <div class="service-tag" data-i18n="tag.signature">Signature</div>
-      <div class="service-price">10 XRP</div>
-      <div class="service-yen">≈ ¥1,500</div>
-    </div>
-  </div>
-
-  <div class="service">
-    <div>
-      <div class="service-name" data-i18n="svc.tour.name">Standing Soba Tour</div>
-      <div class="service-en" data-i18n="svc.tour.sub">Neighborhood walk</div>
-      <div class="service-desc" data-i18n="svc.tour.desc">Curated stands and routes I walk myself.</div>
-    </div>
-    <div class="service-price-wrap">
-      <div class="service-price">5 XRP</div>
-      <div class="service-yen">≈ ¥750</div>
-    </div>
-  </div>
-
-  <div class="service">
-    <div>
-      <div class="service-name" data-i18n="svc.sento.name">Sento Guide</div>
-      <div class="service-en" data-i18n="svc.sento.sub">Public bath culture</div>
-      <div class="service-desc" data-i18n="svc.sento.desc">Local baths — etiquette and how to enjoy.</div>
-    </div>
-    <div class="service-price-wrap">
-      <div class="service-price">3 XRP</div>
-      <div class="service-yen">≈ ¥450</div>
-    </div>
-  </div>
-
-  <div class="service">
-    <div>
-      <div class="service-name" data-i18n="svc.luggage.name">Luggage Storage</div>
-      <div class="service-en" data-i18n="svc.luggage.sub">Light travel</div>
-      <div class="service-desc" data-i18n="svc.luggage.desc">Drop bags and explore hands-free.</div>
-    </div>
-    <div class="service-price-wrap">
-      <div class="service-price">2 XRP</div>
-      <div class="service-yen">≈ ¥300</div>
-    </div>
-  </div>
-
-  <div class="service">
-    <div>
-      <div class="service-name" data-i18n="svc.cafe.name">1F Cafe Bar</div>
-      <div class="service-en" data-i18n="svc.cafe.sub">Drinks & mood</div>
-      <div class="service-desc" data-i18n="svc.cafe.desc">A quiet drink in a neighborhood spot.</div>
-    </div>
-    <div class="service-price-wrap">
-      <div class="service-price">2 XRP</div>
-      <div class="service-yen">≈ ¥300</div>
-    </div>
-  </div>
-
-  <div class="service">
-    <div>
-      <div class="service-name" data-i18n="svc.guest.name">Guesthouse Stay</div>
-      <div class="service-en" data-i18n="svc.guest.sub">Overnight</div>
-      <div class="service-desc" data-i18n="svc.guest.desc">Sleep in Asakusa, wake up local.</div>
-    </div>
-    <div class="service-price-wrap">
-      <div class="service-tag" data-i18n="tag.ask">Ask us</div>
-    </div>
-  </div>
-</div>
-
-<!-- CTA -->
-<div class="cta-wrap">
-  <a href="https://t.me/MyClaude_bot" class="cta-btn" data-i18n="cta.button">Talk to the AI guide</a>
-  <p class="cta-sub" data-i18n="cta.sub">24/7 · EN · 日本語 · 中文 · 한국어</p>
-</div>
-
-<!-- 場所 -->
-<div class="location-wrap">
-  <div class="location-inner">
-    <div class="loc-label" data-i18n="loc.label">Location</div>
-    <div class="loc-address">
-      <span data-i18n="loc.addrMain">Higashi-Komagata 1-chome · Asakusa</span><br>
-      <small data-i18n="loc.addrSub">1-chome Higashi-Komagata, Sumida-ku, Tokyo</small>
-    </div>
-    <div class="loc-access">
-      <span data-i18n="loc.access1">Asakusa Station · 3 min walk</span><br>
-      <span data-i18n="loc.access2">Honjo-Azumabashi Station · 2 min walk</span>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <svg class="footer-mon" viewBox="0 0 40 40" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(200,168,92,1)" stroke-width=".8"/>
-    <circle cx="20" cy="7"  r="3" fill="none" stroke="rgba(200,168,92,1)" stroke-width=".6"/>
-    <circle cx="31" cy="14" r="3" fill="none" stroke="rgba(200,168,92,1)" stroke-width=".6"/>
-    <circle cx="27" cy="28" r="3" fill="none" stroke="rgba(200,168,92,1)" stroke-width=".6"/>
-    <circle cx="13" cy="28" r="3" fill="none" stroke="rgba(200,168,92,1)" stroke-width=".6"/>
-    <circle cx="9"  cy="14" r="3" fill="none" stroke="rgba(200,168,92,1)" stroke-width=".6"/>
-  </svg>
-  <div class="footer-logo">Noren</div>
-  <div class="footer-sub" data-i18n="footer.sub">OpenClaw × XRPL · Asakusa 2026</div>
-</footer>
 
 <script>
 (function () {
-  var STORAGE_KEY = 'noren-lang';
-  var LANGS = ['en', 'ja', 'zh', 'ko'];
+  var STORAGE_KEY = "noren-lang";
+  var LANGS = ["en", "ja", "zh", "ko"];
 
   var T = {
     en: {
-      docTitle: 'Noren — Asakusa',
-      panel: { line1: 'Asakusa · Higashi-Komagata', line2: 'Tokyo · Japan' },
-      hero: {
-        vertical: 'Authentic Asakusa',
-        status: 'Open today',
-        location: 'Higashi-Komagata · Asakusa'
-      },
-      divider: { guide: 'Your Local Guide' },
-      guide: {
-        title1: 'Standing soba researcher',
-        title2: 'Asakusa resident',
-        cred1: 'Google Local Guide Lv.7',
-        cred2: '13,375 pts · 3M photo views'
-      },
-      section: { experiences: 'Experiences' },
-      svc: {
-        soba: {
-          name: 'Soba Making',
-          sub: 'Hands-on workshop',
-          desc: 'From flour to bowl — roll, cut, and eat.'
-        },
-        tour: {
-          name: 'Standing Soba Tour',
-          sub: 'Neighborhood walk',
-          desc: 'Curated stands and routes I walk myself.'
-        },
-        sento: {
-          name: 'Sento Guide',
-          sub: 'Public bath culture',
-          desc: 'Local baths — etiquette and how to enjoy.'
-        },
-        luggage: {
-          name: 'Luggage Storage',
-          sub: 'Light travel',
-          desc: 'Drop bags and explore hands-free.'
-        },
-        cafe: {
-          name: '1F Cafe Bar',
-          sub: 'Drinks & mood',
-          desc: 'A quiet drink in a neighborhood spot.'
-        },
-        guest: {
-          name: 'Guesthouse Stay',
-          sub: 'Overnight',
-          desc: 'Sleep in Asakusa, wake up local.'
-        }
-      },
-      tag: { signature: 'Signature', ask: 'Ask us' },
-      cta: {
-        button: 'Talk to the AI guide',
-        sub: '24/7 · EN · 日本語 · 中文 · 한국어'
-      },
-      loc: {
-        label: 'Location',
-        addrMain: 'Higashi-Komagata 1-chome · Asakusa',
-        addrSub: '1-chome Higashi-Komagata, Sumida-ku, Tokyo',
-        access1: 'Asakusa Station · 3 min walk',
-        access2: 'Honjo-Azumabashi Station · 2 min walk'
-      },
-      footer: { sub: 'OpenClaw × XRPL · Asakusa 2026' }
+      "hero.eyebrow": "Asakusa Local Experience Hub",
+      "hero.title": "Curated Tokyo Moments, Crafted by Locals",
+      "hero.sub": "From hand-made soba to neighborhood sento culture, Noren creates premium micro-experiences for international travelers in Asakusa.",
+      "hero.cta": "Talk to the AI Guide",
+      "hero.cta2": "View Experiences",
+      "chip.1": "English Friendly",
+      "chip.2": "XRP Payment",
+      "chip.3": "Walkable from Asakusa Station",
+      "services.kicker": "Experience Menu",
+      "services.title": "Signature Services (XRP)",
+      "svc.soba.name": "Soba Making Experience",
+      "svc.soba.sub": "Signature",
+      "svc.soba.desc": "Learn from flour to final bowl, then enjoy your own fresh soba on the spot.",
+      "svc.tour.name": "Standing Soba Tour",
+      "svc.tour.sub": "Neighborhood Walk",
+      "svc.tour.desc": "Taste local favorites and hidden counters selected by an Asakusa resident.",
+      "svc.sento.name": "Sento Guide",
+      "svc.sento.sub": "Culture Etiquette",
+      "svc.sento.desc": "Discover neighborhood bathhouses and enjoy them with confidence and respect.",
+      "svc.luggage.name": "Luggage Storage",
+      "svc.luggage.sub": "Travel Light",
+      "svc.luggage.desc": "Drop your bags safely and explore the district without extra weight.",
+      "svc.cafe.name": "1F Cafe Bar",
+      "svc.cafe.sub": "Chill Spot",
+      "svc.cafe.desc": "Relax with local drinks and connect with Asakusa's evening atmosphere.",
+      "svc.guest.name": "Guesthouse Stay",
+      "svc.guest.price": "On Request",
+      "svc.guest.sub": "Overnight",
+      "svc.guest.desc": "Stay overnight and wake up to a true local morning in Asakusa.",
+      "steps.kicker": "How It Works",
+      "steps.1": "Message the AI guide and share your date, group size, and interests.",
+      "steps.2": "Receive a tailored plan and final XRP quote within minutes.",
+      "steps.3": "Meet locally, pay with XRP, and enjoy your curated experience.",
+      "guide.kicker": "Your Host",
+      "guide.meta": "Asakusa resident and standing soba researcher. Google Local Guide Lv.7 with 13,375 points and 3M photo views.",
+      "guide.location": "Higashi-Komagata 1-chome, Sumida-ku, Tokyo\n3 min from Asakusa Station",
+      "final.kicker": "Ready To Start",
+      "final.title": "Build Your Asakusa Plan in 60 Seconds",
+      "final.sub": "Chat with the AI concierge in EN / 日本語 / 中文 / 한국어 and get a smooth travel plan with local support.",
+      "final.cta": "Talk to the AI Guide",
+      "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     },
     ja: {
-      docTitle: 'Noren — 浅草',
-      panel: { line1: '浅草　東駒形', line2: 'Asakusa · Tokyo' },
-      hero: {
-        vertical: '本格浅草体験',
-        status: '本日営業中',
-        location: '東駒形 · 浅草'
-      },
-      divider: { guide: 'ご案内' },
-      guide: {
-        title1: '立ち食いそば研究家',
-        title2: '浅草在住',
-        cred1: 'Google Local Guide Lv.7',
-        cred2: '13,375 pts · 3M photo views'
-      },
-      section: { experiences: '体験メニュー' },
-      svc: {
-        soba: {
-          name: 'そば打ち体験',
-          sub: 'Soba Making Experience',
-          desc: '粉から手打ちして、そのまま食べる。'
-        },
-        tour: {
-          name: '立ち食いそばツアー',
-          sub: 'Standing Soba Tour',
-          desc: '浅草の名店、足で選んだルート。'
-        },
-        sento: {
-          name: '銭湯ガイド',
-          sub: 'Sento Guide',
-          desc: '地元の銭湯、マナーと楽しみ方。'
-        },
-        luggage: {
-          name: '荷物預かり',
-          sub: 'Luggage Storage',
-          desc: '預けて、身軽に散策。'
-        },
-        cafe: {
-          name: 'カフェバー',
-          sub: '1F Cafe Bar',
-          desc: '地元の空気で一杯。'
-        },
-        guest: {
-          name: 'ゲストハウス宿泊',
-          sub: 'Guesthouse Stay',
-          desc: '浅草で眠り、地元の朝を迎える。'
-        }
-      },
-      tag: { signature: 'Signature', ask: '要相談' },
-      cta: {
-        button: 'AIガイドに話しかける',
-        sub: '24/7 · EN · 日本語 · 中文 · 한국어'
-      },
-      loc: {
-        label: '所在地',
-        addrMain: '東駒形一丁目　浅草',
-        addrSub: '東京都墨田区東駒形1丁目',
-        access1: '浅草駅 徒歩3分 · Asakusa St. 3 min',
-        access2: '本所吾妻橋駅 徒歩2分 · Honjo-Azumabashi 2 min'
-      },
-      footer: { sub: 'OpenClaw × XRPL · 浅草 2026' }
+      "hero.eyebrow": "浅草ローカル体験ハブ",
+      "hero.title": "地元がつくる、浅草の特別な時間",
+      "hero.sub": "手打ちそば体験から銭湯文化まで。Norenは海外旅行者向けに、浅草の上質なマイクロ体験を提供します。",
+      "hero.cta": "AIガイドに話しかける",
+      "hero.cta2": "体験を見る",
+      "chip.1": "英語対応",
+      "chip.2": "XRP決済",
+      "chip.3": "浅草駅から徒歩圏",
+      "services.kicker": "体験メニュー",
+      "services.title": "シグネチャーサービス（XRP）",
+      "svc.soba.name": "そば打ち体験",
+      "svc.soba.sub": "シグネチャー",
+      "svc.soba.desc": "粉から打って、その場で食べる本格そば体験です。",
+      "svc.tour.name": "立ち食いそばツアー",
+      "svc.tour.sub": "街歩き",
+      "svc.tour.desc": "浅草在住の目線で選んだ名店をめぐります。",
+      "svc.sento.name": "銭湯ガイド",
+      "svc.sento.sub": "文化マナー",
+      "svc.sento.desc": "地元の銭湯文化を、安心して楽しめるよう案内します。",
+      "svc.luggage.name": "荷物預かり",
+      "svc.luggage.sub": "身軽に散策",
+      "svc.luggage.desc": "荷物を預けて、浅草を快適に歩けます。",
+      "svc.cafe.name": "1F カフェバー",
+      "svc.cafe.sub": "休憩スポット",
+      "svc.cafe.desc": "地元の空気を感じながら、ゆっくり一杯。",
+      "svc.guest.name": "ゲストハウス宿泊",
+      "svc.guest.price": "応相談",
+      "svc.guest.sub": "宿泊",
+      "svc.guest.desc": "浅草で眠り、地元の朝を迎えるステイ。",
+      "steps.kicker": "ご利用の流れ",
+      "steps.1": "AIガイドに日程・人数・希望を送る",
+      "steps.2": "最適プランとXRP料金をすぐ受け取る",
+      "steps.3": "現地で合流し、XRPで支払い・体験開始",
+      "guide.kicker": "ガイド",
+      "guide.meta": "浅草在住の立ち食いそば研究家。Google Local Guide Lv.7、13,375ポイント、写真閲覧300万回。",
+      "guide.location": "東京都墨田区東駒形1丁目\n浅草駅から徒歩3分",
+      "final.kicker": "今すぐ開始",
+      "final.title": "60秒で浅草プランを作成",
+      "final.sub": "EN / 日本語 / 中文 / 한국어 対応のAIコンシェルジュで、スムーズに旅行計画を作れます。",
+      "final.cta": "AIガイドに話しかける",
+      "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     },
     zh: {
-      docTitle: 'Noren — 浅草',
-      panel: { line1: '浅草 · 东驹形', line2: '东京 · 日本' },
-      hero: {
-        vertical: '正宗浅草体验',
-        status: '今日营业',
-        location: '东驹形 · 浅草'
-      },
-      divider: { guide: '本地向导' },
-      guide: {
-        title1: '立食荞麦研究者',
-        title2: '浅草居民',
-        cred1: 'Google 本地向导 Lv.7',
-        cred2: '13,375 分 · 300 万次浏览'
-      },
-      section: { experiences: '体验项目' },
-      svc: {
-        soba: {
-          name: '手打荞麦体验',
-          sub: '招牌体验',
-          desc: '从面粉到一碗面，现打现吃。'
-        },
-        tour: {
-          name: '立食荞麦巡礼',
-          sub: '步行寻味',
-          desc: '精选浅草名店与路线。'
-        },
-        sento: {
-          name: '钱汤指南',
-          sub: '公共浴池文化',
-          desc: '本地澡堂，礼仪与乐趣。'
-        },
-        luggage: {
-          name: '行李寄存',
-          sub: '轻装游览',
-          desc: '寄存行李，轻松散步。'
-        },
-        cafe: {
-          name: '一楼咖啡酒吧',
-          sub: '咖啡与酒',
-          desc: '在当地氛围中小酌一杯。'
-        },
-        guest: {
-          name: '民宿住宿',
-          sub: '过夜',
-          desc: '睡在浅草，遇见当地的清晨。'
-        }
-      },
-      tag: { signature: '招牌', ask: '面议' },
-      cta: {
-        button: '联系 AI 向导',
-        sub: '24/7 · EN · 日本語 · 中文 · 한국어'
-      },
-      loc: {
-        label: '位置',
-        addrMain: '东驹形一丁目 · 浅草',
-        addrSub: '东京都墨田区东驹形一丁目',
-        access1: '浅草站 步行约3分钟',
-        access2: '本所吾妻桥站 步行约2分钟'
-      },
-      footer: { sub: 'OpenClaw × XRPL · 浅草 2026' }
+      "hero.eyebrow": "浅草在地体验中心",
+      "hero.title": "由本地人打造的东京体验",
+      "hero.sub": "从手打荞麦到钱汤文化，Noren 为国际游客提供高品质浅草微旅行体验。",
+      "hero.cta": "联系 AI 向导",
+      "hero.cta2": "查看体验",
+      "chip.1": "支持英文",
+      "chip.2": "支持 XRP 支付",
+      "chip.3": "浅草站步行可达",
+      "services.kicker": "体验项目",
+      "services.title": "招牌服务（XRP）",
+      "svc.soba.name": "手打荞麦体验",
+      "svc.soba.sub": "招牌项目",
+      "svc.soba.desc": "从面粉到成面，亲手制作并现场品尝。",
+      "svc.tour.name": "立食荞麦巡礼",
+      "svc.tour.sub": "街区步行",
+      "svc.tour.desc": "由浅草本地人精选的人气小店路线。",
+      "svc.sento.name": "钱汤向导",
+      "svc.sento.sub": "文化礼仪",
+      "svc.sento.desc": "带你安心体验本地公共浴池文化。",
+      "svc.luggage.name": "行李寄存",
+      "svc.luggage.sub": "轻松出行",
+      "svc.luggage.desc": "先寄存行李，再轻松逛浅草。",
+      "svc.cafe.name": "1F 咖啡酒吧",
+      "svc.cafe.sub": "放松空间",
+      "svc.cafe.desc": "在本地氛围中，轻松小酌休息。",
+      "svc.guest.name": "民宿住宿",
+      "svc.guest.price": "可协商",
+      "svc.guest.sub": "过夜",
+      "svc.guest.desc": "住在浅草，感受真实东京早晨。",
+      "steps.kicker": "流程说明",
+      "steps.1": "向 AI 向导发送日期、人数和兴趣",
+      "steps.2": "几分钟内收到定制方案和 XRP 报价",
+      "steps.3": "现场见面，XRP 支付后开始体验",
+      "guide.kicker": "你的向导",
+      "guide.meta": "浅草在住立食荞麦研究者。Google 本地向导 Lv.7，13,375 分，照片浏览 300 万。",
+      "guide.location": "东京都墨田区东驹形1丁目\n距离浅草站步行3分钟",
+      "final.kicker": "马上开始",
+      "final.title": "60 秒生成你的浅草计划",
+      "final.sub": "AI 礼宾支持 EN / 日本語 / 中文 / 한국어，快速完成你的旅行安排。",
+      "final.cta": "联系 AI 向导",
+      "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     },
     ko: {
-      docTitle: 'Noren — 아사쿠사',
-      panel: { line1: '아사쿠사 · 히가시코마가타', line2: '도쿄 · 일본' },
-      hero: {
-        vertical: '정통 아사쿠사 체험',
-        status: '오늘 영업',
-        location: '히가시코마가타 · 아사쿠사'
-      },
-      divider: { guide: '로컬 가이드' },
-      guide: {
-        title1: '입식 소바 연구가',
-        title2: '아사쿠사 거주',
-        cred1: 'Google 로컬 가이드 Lv.7',
-        cred2: '13,375점 · 사진 조회 300만'
-      },
-      section: { experiences: '체험 메뉴' },
-      svc: {
-        soba: {
-          name: '메밀국수 만들기',
-          sub: '시그니처 체험',
-          desc: '가루부터 반죽해 바로 먹는 손맛.'
-        },
-        tour: {
-          name: '입식 소바 투어',
-          sub: '동네 산책 코스',
-          desc: '아사쿠사 명소를 걸으며 고른 루트.'
-        },
-        sento: {
-          name: '공중목욕탕 가이드',
-          sub: '센토 문화',
-          desc: '동네 목욕탕, 예절과 즐기는 법.'
-        },
-        luggage: {
-          name: '짐 보관',
-          sub: '가볍게 관광',
-          desc: '짐을 맡기고 자유롭게 산책.'
-        },
-        cafe: {
-          name: '1층 카페 바',
-          sub: '음료와 분위기',
-          desc: '동네 공기 속에서 한 잔.'
-        },
-        guest: {
-          name: '게스트하우스 숙박',
-          sub: '1박',
-          desc: '아사쿠사에서 잠들고, 동네의 아침을 맞이하세요.'
-        }
-      },
-      tag: { signature: '시그니처', ask: '문의' },
-      cta: {
-        button: 'AI 가이드에게 말 걸기',
-        sub: '24/7 · EN · 日本語 · 中文 · 한국어'
-      },
-      loc: {
-        label: '위치',
-        addrMain: '히가시코마가타 1초메 · 아사쿠사',
-        addrSub: '도쿄도 스미다구 히가시코마가타 1초메',
-        access1: '아사쿠사역 도보 약 3분',
-        access2: '혼조아즈마바시역 도보 약 2분'
-      },
-      footer: { sub: 'OpenClaw × XRPL · 아사쿠사 2026' }
+      "hero.eyebrow": "아사쿠사 로컬 체험 허브",
+      "hero.title": "로컬이 만드는 도쿄의 특별한 순간",
+      "hero.sub": "수타 소바부터 센토 문화까지, Noren은 해외 여행자를 위한 프리미엄 아사쿠사 체험을 제공합니다.",
+      "hero.cta": "AI 가이드에게 말 걸기",
+      "hero.cta2": "체험 보기",
+      "chip.1": "영어 대응",
+      "chip.2": "XRP 결제",
+      "chip.3": "아사쿠사역 도보권",
+      "services.kicker": "체험 메뉴",
+      "services.title": "시그니처 서비스 (XRP)",
+      "svc.soba.name": "소바 만들기 체험",
+      "svc.soba.sub": "시그니처",
+      "svc.soba.desc": "가루부터 직접 만들고 현장에서 바로 맛봅니다.",
+      "svc.tour.name": "입식 소바 투어",
+      "svc.tour.sub": "동네 산책",
+      "svc.tour.desc": "아사쿠사 로컬이 고른 인기 점포를 함께 방문합니다.",
+      "svc.sento.name": "센토 가이드",
+      "svc.sento.sub": "문화 매너",
+      "svc.sento.desc": "현지 목욕 문화를 편안하게 즐길 수 있도록 안내합니다.",
+      "svc.luggage.name": "짐 보관",
+      "svc.luggage.sub": "가볍게 이동",
+      "svc.luggage.desc": "짐을 맡기고 아사쿠사를 자유롭게 둘러보세요.",
+      "svc.cafe.name": "1F 카페 바",
+      "svc.cafe.sub": "휴식 공간",
+      "svc.cafe.desc": "로컬 분위기 속에서 여유롭게 한 잔.",
+      "svc.guest.name": "게스트하우스 숙박",
+      "svc.guest.price": "문의",
+      "svc.guest.sub": "숙박",
+      "svc.guest.desc": "아사쿠사에서 자고, 동네의 아침을 만나보세요.",
+      "steps.kicker": "이용 방법",
+      "steps.1": "AI 가이드에게 일정, 인원, 취향을 보냅니다",
+      "steps.2": "맞춤 플랜과 XRP 견적을 빠르게 받습니다",
+      "steps.3": "현지에서 만나 XRP 결제 후 체험을 시작합니다",
+      "guide.kicker": "호스트",
+      "guide.meta": "아사쿠사 거주 입식 소바 연구가. Google 로컬 가이드 Lv.7, 13,375점, 사진 조회 300만.",
+      "guide.location": "도쿄도 스미다구 히가시코마가타 1초메\n아사쿠사역 도보 3분",
+      "final.kicker": "지금 시작",
+      "final.title": "60초 만에 아사쿠사 플랜 만들기",
+      "final.sub": "EN / 日本語 / 中文 / 한국어 지원 AI 컨시어지로 빠르게 여행 계획을 완성하세요.",
+      "final.cta": "AI 가이드에게 말 걸기",
+      "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     }
   };
 
-  function flatten(obj, prefix, out) {
-    prefix = prefix || '';
-    out = out || {};
-    for (var k in obj) {
-      if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
-      var v = obj[k];
-      var key = prefix ? prefix + '.' + k : k;
-      if (v && typeof v === 'object' && !Array.isArray(v)) {
-        flatten(v, key, out);
-      } else {
-        out[key] = v;
+  function applyLang(lang) {
+    var safeLang = LANGS.indexOf(lang) !== -1 ? lang : "en";
+    var map = T[safeLang];
+    document.documentElement.lang = safeLang === "zh" ? "zh-Hans" : safeLang;
+    document.body.classList.remove("lang-en", "lang-ja", "lang-zh", "lang-ko");
+    document.body.classList.add("lang-" + safeLang);
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < nodes.length; i++) {
+      var key = nodes[i].getAttribute("data-i18n");
+      if (map[key] !== undefined) {
+        nodes[i].innerText = map[key];
       }
     }
-    return out;
-  }
-
-  var flat = {};
-  for (var li = 0; li < LANGS.length; li++) {
-    flat[LANGS[li]] = flatten(T[LANGS[li]], '', {});
-  }
-
-  var body = document.body;
-
-  function detectLang() {
-    try {
-      var saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && LANGS.indexOf(saved) !== -1) return saved;
-    } catch (e) {}
-    var nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-    if (nav.indexOf('ja') === 0) return 'ja';
-    if (nav.indexOf('zh') === 0) return 'zh';
-    if (nav.indexOf('ko') === 0) return 'ko';
-    return 'en';
-  }
-
-  function applyLang(lang) {
-    if (LANGS.indexOf(lang) === -1) lang = 'en';
-    var map = flat[lang];
-    document.documentElement.lang = lang === 'ja' ? 'ja' : lang === 'zh' ? 'zh-Hans' : lang === 'ko' ? 'ko' : 'en';
-    document.title = T[lang].docTitle;
-
-    body.classList.remove('lang-en', 'lang-ja', 'lang-zh', 'lang-ko');
-    body.classList.add('lang-' + lang);
-
-    var nodes = document.querySelectorAll('[data-i18n]');
-    for (var i = 0; i < nodes.length; i++) {
-      var el = nodes[i];
-      var key = el.getAttribute('data-i18n');
-      if (map[key] !== undefined) el.textContent = map[key];
-    }
-
-    var buttons = document.querySelectorAll('.lang-btn');
+    var buttons = document.querySelectorAll(".lang-btn");
     for (var b = 0; b < buttons.length; b++) {
-      var btn = buttons[b];
-      var isOn = btn.getAttribute('data-lang') === lang;
-      btn.classList.toggle('active', isOn);
-      btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+      var isActive = buttons[b].getAttribute("data-lang") === safeLang;
+      buttons[b].classList.toggle("active", isActive);
+      buttons[b].setAttribute("aria-pressed", isActive ? "true" : "false");
     }
-
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, safeLang); } catch (e) {}
   }
 
-  var initial = detectLang();
+  var initial = "en";
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && LANGS.indexOf(saved) !== -1) initial = saved;
+  } catch (e) {}
   applyLang(initial);
 
-  document.querySelector('.lang-bar').addEventListener('click', function (e) {
-    var t = e.target.closest('[data-lang]');
-    if (!t) return;
-    var lang = t.getAttribute('data-lang');
-    if (lang) applyLang(lang);
+  document.querySelector(".lang-bar").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-lang]");
+    if (!btn) return;
+    applyLang(btn.getAttribute("data-lang"));
   });
 })();
 </script>
-
 </body>
 </html>
