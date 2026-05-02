@@ -7,7 +7,7 @@
 <title>Noren — Asakusa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=Noto+Sans+JP:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&family=Noto+Sans+KR:wght@300;400&family=Noto+Sans+SC:wght@300;400&family=Noto+Serif+JP:wght@200;300;400&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -36,6 +36,26 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+body.lang-zh {
+  font-family: 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+}
+body.lang-ko {
+  font-family: 'Noto Sans KR', 'Noto Sans JP', sans-serif;
+}
+body.lang-zh .panel-kanji,
+body.lang-zh .guide-name,
+body.lang-zh .hero-location,
+body.lang-zh .loc-address,
+body.lang-zh .service-name {
+  font-family: 'Noto Serif SC', 'Noto Serif JP', serif;
+}
+body.lang-ko .panel-kanji,
+body.lang-ko .guide-name,
+body.lang-ko .hero-location,
+body.lang-ko .loc-address,
+body.lang-ko .service-name {
+  font-family: 'Noto Serif JP', serif;
+}
 
 /* 縦縞テクスチャ */
 body::before {
@@ -60,10 +80,12 @@ body::before {
 .lang-btn {
   background: none; border: none;
   color: var(--faint);
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: inherit;
   font-size: 12px; letter-spacing: .06em; cursor: pointer;
-  padding: 6px 8px;        /* タップ領域を広く */
-  min-height: 36px;
+  padding: 10px 8px;
+  min-height: 44px;       /* 最小タップ領域 */
+  min-width: 44px;
+  justify-content: center;
   display: flex; align-items: center;
   transition: color .2s;
 }
@@ -370,11 +392,11 @@ footer {
 </head>
 <body>
 
-<div class="lang-bar">
-  <button class="lang-btn active">EN</button>
-  <button class="lang-btn">日本語</button>
-  <button class="lang-btn">中文</button>
-  <button class="lang-btn">한국어</button>
+<div class="lang-bar" role="toolbar" aria-label="Language">
+  <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+  <button type="button" class="lang-btn" data-lang="ja" aria-pressed="false">日本語</button>
+  <button type="button" class="lang-btn" data-lang="zh" aria-pressed="false">中文</button>
+  <button type="button" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</button>
 </div>
 
 <!-- のれん -->
@@ -407,8 +429,8 @@ footer {
           <circle cx="25" cy="25" r="3" fill="none" stroke="rgba(26,45,74,.25)" stroke-width=".8"/>
         </svg>
         <div class="panel-title">Noren</div>
-        <div class="panel-sub-ja">浅草　東駒形</div>
-        <div class="panel-sub-en">Asakusa · Tokyo</div>
+        <div class="panel-sub-ja" data-i18n="panel.line1">浅草　東駒形</div>
+        <div class="panel-sub-en" data-i18n="panel.line2">Asakusa · Tokyo</div>
       </div>
 
       <div class="noren-panel panel-side">
@@ -427,18 +449,18 @@ footer {
     </div>
   </div>
 
-  <div class="hero-vertical">本格浅草体験</div>
+  <div class="hero-vertical" data-i18n="hero.vertical">本格浅草体験</div>
 
   <div class="hero-content fade">
-    <div class="status-dot"><span class="dot"></span>Open today</div>
-    <div class="hero-location">Higashi-Komagata · Asakusa</div>
+    <div class="status-dot"><span class="dot"></span><span data-i18n="hero.status">Open today</span></div>
+    <div class="hero-location" data-i18n="hero.location">Higashi-Komagata · Asakusa</div>
   </div>
 </div>
 
 <!-- 案内人 -->
 <div class="divider fade-2">
   <div class="divider-line"></div>
-  <div class="divider-kiku">Your Local Guide</div>
+  <div class="divider-kiku" data-i18n="divider.guide">Your Local Guide</div>
   <div class="divider-line"></div>
 </div>
 
@@ -446,23 +468,23 @@ footer {
   <div class="guide-frame">🍜</div>
   <div>
     <div class="guide-name">Toru</div>
-    <div class="guide-title">Standing soba researcher<br>Asakusa resident</div>
-    <div class="guide-cred">Google Local Guide Lv.7<br>13,375 pts · 3M photo views</div>
+    <div class="guide-title"><span data-i18n="guide.title1">Standing soba researcher</span><br><span data-i18n="guide.title2">Asakusa resident</span></div>
+    <div class="guide-cred"><span data-i18n="guide.cred1">Google Local Guide Lv.7</span><br><span data-i18n="guide.cred2">13,375 pts · 3M photo views</span></div>
   </div>
 </div>
 
 <!-- 体験メニュー -->
 <div class="services-wrap fade-3">
-  <div class="section-label">Experiences</div>
+  <div class="section-label" data-i18n="section.experiences">Experiences</div>
 
   <div class="service">
     <div>
-      <div class="service-name">そば打ち体験</div>
-      <div class="service-en">Soba Making Experience</div>
-      <div class="service-desc">粉から手打ちして、そのまま食べる。</div>
+      <div class="service-name" data-i18n="svc.soba.name">そば打ち体験</div>
+      <div class="service-en" data-i18n="svc.soba.sub">Soba Making Experience</div>
+      <div class="service-desc" data-i18n="svc.soba.desc">粉から手打ちして、そのまま食べる。</div>
     </div>
     <div class="service-price-wrap">
-      <div class="service-tag">Signature</div>
+      <div class="service-tag" data-i18n="tag.signature">Signature</div>
       <div class="service-price">10 XRP</div>
       <div class="service-yen">≈ ¥1,500</div>
     </div>
@@ -470,9 +492,9 @@ footer {
 
   <div class="service">
     <div>
-      <div class="service-name">立ち食いそばツアー</div>
-      <div class="service-en">Standing Soba Tour</div>
-      <div class="service-desc">浅草の名店、足で選んだルート。</div>
+      <div class="service-name" data-i18n="svc.tour.name">立ち食いそばツアー</div>
+      <div class="service-en" data-i18n="svc.tour.sub">Standing Soba Tour</div>
+      <div class="service-desc" data-i18n="svc.tour.desc">浅草の名店、足で選んだルート。</div>
     </div>
     <div class="service-price-wrap">
       <div class="service-price">5 XRP</div>
@@ -482,9 +504,9 @@ footer {
 
   <div class="service">
     <div>
-      <div class="service-name">銭湯ガイド</div>
-      <div class="service-en">Sento Guide</div>
-      <div class="service-desc">地元の銭湯、マナーと楽しみ方。</div>
+      <div class="service-name" data-i18n="svc.sento.name">銭湯ガイド</div>
+      <div class="service-en" data-i18n="svc.sento.sub">Sento Guide</div>
+      <div class="service-desc" data-i18n="svc.sento.desc">地元の銭湯、マナーと楽しみ方。</div>
     </div>
     <div class="service-price-wrap">
       <div class="service-price">3 XRP</div>
@@ -494,9 +516,9 @@ footer {
 
   <div class="service">
     <div>
-      <div class="service-name">荷物預かり</div>
-      <div class="service-en">Luggage Storage</div>
-      <div class="service-desc">預けて、身軽に散策。</div>
+      <div class="service-name" data-i18n="svc.luggage.name">荷物預かり</div>
+      <div class="service-en" data-i18n="svc.luggage.sub">Luggage Storage</div>
+      <div class="service-desc" data-i18n="svc.luggage.desc">預けて、身軽に散策。</div>
     </div>
     <div class="service-price-wrap">
       <div class="service-price">2 XRP</div>
@@ -506,9 +528,9 @@ footer {
 
   <div class="service">
     <div>
-      <div class="service-name">カフェバー</div>
-      <div class="service-en">1F Cafe Bar</div>
-      <div class="service-desc">地元の空気で一杯。</div>
+      <div class="service-name" data-i18n="svc.cafe.name">カフェバー</div>
+      <div class="service-en" data-i18n="svc.cafe.sub">1F Cafe Bar</div>
+      <div class="service-desc" data-i18n="svc.cafe.desc">地元の空気で一杯。</div>
     </div>
     <div class="service-price-wrap">
       <div class="service-price">2 XRP</div>
@@ -518,33 +540,33 @@ footer {
 
   <div class="service">
     <div>
-      <div class="service-name">ゲストハウス宿泊</div>
-      <div class="service-en">Guesthouse Stay</div>
-      <div class="service-desc">浅草で眠り、地元の朝を迎える。</div>
+      <div class="service-name" data-i18n="svc.guest.name">ゲストハウス宿泊</div>
+      <div class="service-en" data-i18n="svc.guest.sub">Guesthouse Stay</div>
+      <div class="service-desc" data-i18n="svc.guest.desc">浅草で眠り、地元の朝を迎える。</div>
     </div>
     <div class="service-price-wrap">
-      <div class="service-tag">Ask us</div>
+      <div class="service-tag" data-i18n="tag.ask">Ask us</div>
     </div>
   </div>
 </div>
 
 <!-- CTA -->
 <div class="cta-wrap">
-  <a href="https://t.me/MyClaude_bot" class="cta-btn">AIガイドに話しかける</a>
-  <p class="cta-sub">24/7 · EN · 日本語 · 中文 · 한국어</p>
+  <a href="https://t.me/MyClaude_bot" class="cta-btn" data-i18n="cta.button">Talk to the AI guide</a>
+  <p class="cta-sub" data-i18n="cta.sub">24/7 · EN · 日本語 · 中文 · 한국어</p>
 </div>
 
 <!-- 場所 -->
 <div class="location-wrap">
   <div class="location-inner">
-    <div class="loc-label">Location</div>
+    <div class="loc-label" data-i18n="loc.label">Location</div>
     <div class="loc-address">
-      東駒形一丁目　浅草<br>
-      <small>東京都墨田区東駒形1丁目</small>
+      <span data-i18n="loc.addrMain">Higashi-Komagata 1-chome · Asakusa</span><br>
+      <small data-i18n="loc.addrSub">1-chome Higashi-Komagata, Sumida-ku, Tokyo</small>
     </div>
     <div class="loc-access">
-      浅草駅 徒歩3分　Asakusa St. 3 min<br>
-      本所吾妻橋駅 徒歩2分　Honjo-Azumabashi 2 min
+      <span data-i18n="loc.access1">Asakusa Station · 3 min walk</span><br>
+      <span data-i18n="loc.access2">Honjo-Azumabashi Station · 2 min walk</span>
     </div>
   </div>
 </div>
