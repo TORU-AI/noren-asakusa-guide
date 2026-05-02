@@ -7,21 +7,21 @@
 <title>Noren Asakusa | Local Experiences</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,
 *::before,
 *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #070c18;
-  --bg-soft: #0f1b34;
-  --panel: rgba(17, 28, 53, 0.68);
-  --line: rgba(163, 186, 231, 0.22);
+  --bg: #080808;
+  --bg-soft: #151515;
+  --panel: rgba(18, 18, 18, 0.9);
+  --line: rgba(255, 255, 255, 0.2);
   --gold: #d7b56d;
-  --ink: #ebf1ff;
-  --muted: #9ab0da;
-  --teal: #4fd3c4;
+  --ink: #f3f3f0;
+  --muted: #afafaa;
+  --teal: #d7b56d;
 }
 
 html { scroll-behavior: smooth; background: var(--bg); }
@@ -29,10 +29,7 @@ html { scroll-behavior: smooth; background: var(--bg); }
 body {
   font-family: Inter, "Noto Sans JP", sans-serif;
   color: var(--ink);
-  background:
-    radial-gradient(circle at 80% -10%, rgba(79, 211, 196, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 8% 20%, rgba(215, 181, 109, 0.12) 0%, transparent 45%),
-    linear-gradient(180deg, #080f1f 0%, #070c18 100%);
+  background: #080808;
   min-height: 100vh;
 }
 
@@ -54,8 +51,7 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
   justify-content: flex-end;
   gap: 4px;
   padding: max(14px, env(safe-area-inset-top)) 0 10px;
-  backdrop-filter: blur(10px);
-  background: linear-gradient(180deg, rgba(7,12,24,.92) 0%, rgba(7,12,24,.38) 74%, transparent 100%);
+  background: linear-gradient(180deg, rgba(8,8,8,.97) 0%, rgba(8,8,8,.6) 74%, transparent 100%);
 }
 
 .lang-btn {
@@ -73,19 +69,101 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
 
 .lang-btn.active {
   color: var(--ink);
-  border-color: rgba(215, 181, 109, .5);
-  background: rgba(215, 181, 109, .1);
+  border-color: rgba(255, 255, 255, .5);
+  background: rgba(255, 255, 255, .08);
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 0 0 18px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  margin-bottom: 18px;
+}
+
+.top-nav-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.top-nav a {
+  color: #d5d5cf;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.arrow-rail {
+  color: rgba(215,181,109,.74);
+  letter-spacing: .12em;
+  font-size: 11px;
+  margin-bottom: 14px;
+}
+
+.motion-zone {
+  border-top: 1px solid rgba(255,255,255,.12);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  margin: 0 0 18px;
+  overflow: hidden;
+}
+
+.motion-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  padding: 10px 0;
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(235, 235, 229, .72);
+}
+
+.motion-track span {
+  margin-right: 28px;
+}
+
+.motion-track.forward {
+  animation: marqueeForward 28s linear infinite;
+}
+
+.motion-track.backward {
+  animation: marqueeBackward 32s linear infinite;
+  color: rgba(215,181,109,.76);
+}
+
+@keyframes marqueeForward {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marqueeBackward {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
 }
 
 .hero {
   position: relative;
-  border: 1px solid var(--line);
-  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 20px;
   overflow: hidden;
   min-height: 560px;
-  background:
-    linear-gradient(130deg, rgba(9,16,33,.94) 0%, rgba(10,22,48,.7) 55%, rgba(12,28,54,.82) 100%),
-    radial-gradient(circle at 72% 24%, rgba(79, 211, 196, .22) 0%, transparent 52%);
+  background: #101010;
 }
 
 .hero-art {
@@ -100,9 +178,9 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, rgba(7,12,24,.92) 22%, rgba(7,12,24,.2) 68%, rgba(7,12,24,.84) 100%),
+    linear-gradient(100deg, rgba(8,8,8,.94) 18%, rgba(8,8,8,.15) 66%, rgba(8,8,8,.9) 100%),
     url("hero.png") center / cover no-repeat;
-  opacity: .84;
+  opacity: .9;
 }
 
 .hero-art::after {
@@ -110,8 +188,8 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(7,12,24,.08) 0%, rgba(7,12,24,.84) 82%),
-    radial-gradient(circle at 76% 30%, rgba(215, 181, 109, .22) 0%, transparent 30%);
+    linear-gradient(180deg, rgba(8,8,8,.06) 0%, rgba(8,8,8,.86) 82%),
+    radial-gradient(circle at 74% 30%, rgba(215, 181, 109, .2) 0%, transparent 30%);
 }
 
 .hero-gate {
@@ -124,18 +202,59 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
 
 .hero-gate svg { width: 100%; height: auto; display: block; }
 
+.noren-breeze {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(78%, 520px);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+  opacity: .82;
+  pointer-events: none;
+}
+
+.noren-strip {
+  flex: 1;
+  min-height: 150px;
+  border-radius: 0 0 22px 22px;
+  transform-origin: top center;
+  background: linear-gradient(180deg, rgba(214,186,132,.66) 0%, rgba(228,217,194,.28) 45%, rgba(255,255,255,0) 100%);
+  animation: norenFlutter 1.8s ease-in-out infinite;
+}
+
+.noren-strip:nth-child(2) {
+  animation-delay: .2s;
+  background: linear-gradient(180deg, rgba(236,223,194,.88) 0%, rgba(244,237,222,.42) 45%, rgba(255,255,255,0) 100%);
+}
+
+.noren-strip:nth-child(3) {
+  animation-delay: .35s;
+}
+
+@keyframes norenFlutter {
+  0%, 100% { transform: rotate(-1.6deg) translateY(0); }
+  50% { transform: rotate(1.6deg) translateY(3px); }
+}
+
+@keyframes softBreathe {
+  0%, 100% { opacity: .86; transform: scale(1); }
+  50% { opacity: .97; transform: scale(1.015); }
+}
+
 .hero-inner {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: clamp(28px, 6vw, 62px);
-  max-width: 670px;
+  max-width: 740px;
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--teal);
+  color: var(--gold);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: .18em;
@@ -152,16 +271,22 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
 
 h1 {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(42px, 7vw, 72px);
-  line-height: .95;
+  font-size: clamp(44px, 8vw, 86px);
+  line-height: .9;
   font-weight: 600;
+  letter-spacing: .01em;
   margin-bottom: 16px;
 }
 
+h1 em {
+  font-style: normal;
+  color: var(--gold);
+}
+
 .hero-sub {
-  color: #c4d3f3;
+  color: #cdcdc9;
   line-height: 1.75;
-  max-width: 58ch;
+  max-width: 56ch;
   margin-bottom: 24px;
 }
 
@@ -177,21 +302,26 @@ h1 {
   align-items: center;
   justify-content: center;
   padding: 0 20px;
-  border-radius: 12px;
+  border-radius: 999px;
   text-decoration: none;
   font-weight: 500;
   letter-spacing: .04em;
 }
 
+.btn-arrow {
+  margin-left: 10px;
+  opacity: .88;
+}
+
 .btn-primary {
-  color: #0a1328;
-  background: linear-gradient(135deg, #f0d086 0%, #c9a45a 100%);
+  color: #0d0d0d;
+  background: linear-gradient(135deg, #f0d086 0%, #d7b56d 100%);
 }
 
 .btn-secondary {
   color: var(--ink);
-  border: 1px solid rgba(163, 186, 231, 0.36);
-  background: rgba(17, 28, 53, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .chips {
@@ -202,19 +332,18 @@ h1 {
 }
 
 .chip {
-  border: 1px solid rgba(163, 186, 231, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
   padding: 6px 10px;
   font-size: 11px;
-  color: #bfd1f5;
+  color: #d1d1cc;
 }
 
 .section {
-  margin-top: 28px;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--panel);
-  backdrop-filter: blur(6px);
+  margin-top: 36px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  background: #0f0f0f;
 }
 
 .section-head {
@@ -237,14 +366,14 @@ h1 {
 .services {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
   padding: 24px;
 }
 
 .card {
-  border: 1px solid rgba(163, 186, 231, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
-  background: rgba(9, 18, 36, 0.65);
+  background: rgba(255, 255, 255, 0.01);
   padding: 16px;
 }
 
@@ -258,8 +387,14 @@ h1 {
 
 .card-name { font-weight: 600; font-size: 16px; }
 .card-price { color: var(--gold); font-weight: 600; white-space: nowrap; }
-.card-sub { color: #bfd1f5; font-size: 13px; margin-bottom: 8px; }
-.card-desc { color: #9ab0da; font-size: 14px; line-height: 1.6; }
+.card-sub { color: #e6ce98; font-size: 13px; margin-bottom: 8px; }
+.card-desc { color: #b6b6b1; font-size: 14px; line-height: 1.6; }
+.card-fiat {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #d8c28d;
+  letter-spacing: .04em;
+}
 
 .split {
   display: grid;
@@ -269,9 +404,9 @@ h1 {
 }
 
 .panel {
-  border: 1px solid rgba(163, 186, 231, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
-  background: rgba(9, 18, 36, 0.5);
+  background: rgba(255,255,255,.01);
   padding: 16px;
 }
 
@@ -290,14 +425,14 @@ h1 {
 .bottom-cta {
   margin-top: 24px;
   padding: 24px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255,255,255,.14);
   border-radius: 20px;
   text-align: center;
-  background: linear-gradient(180deg, rgba(16,30,58,.7) 0%, rgba(9,18,36,.74) 100%);
+  background: linear-gradient(180deg, rgba(22,22,22,.95) 0%, rgba(12,12,12,.95) 100%);
 }
 
 .bottom-cta p {
-  color: #bfd1f5;
+  color: #c0c0ba;
   margin: 8px auto 16px;
   max-width: 62ch;
   line-height: 1.7;
@@ -306,7 +441,7 @@ h1 {
 footer {
   text-align: center;
   margin-top: 18px;
-  color: #7f95bf;
+  color: #8d8d87;
   font-size: 12px;
 }
 
@@ -317,11 +452,81 @@ footer {
 }
 
 @media (max-width: 430px) {
+  body {
+    color: #1e2320;
+    background:
+      radial-gradient(circle at 78% -10%, rgba(215,181,109,.22) 0%, transparent 38%),
+      linear-gradient(180deg, #f9faf6 0%, #f1f3ed 100%);
+  }
+  .lang-bar {
+    background: linear-gradient(180deg, rgba(249,250,246,.96) 0%, rgba(249,250,246,.64) 74%, transparent 100%);
+  }
+  .lang-btn { color: #5f685d; }
+  .lang-btn.active {
+    color: #1f2421;
+    border-color: rgba(42, 52, 42, .35);
+    background: rgba(255, 255, 255, .72);
+  }
   .shell { width: calc(100vw - 20px); }
-  .hero { border-radius: 20px; min-height: 500px; }
+  .top-nav { border-bottom-color: rgba(38, 52, 41, .16); }
+  .top-nav a { color: #2b312a; }
+  .nav-cta { color: #7f6330; }
+  .motion-zone {
+    border-top-color: rgba(38, 52, 41, .12);
+    border-bottom-color: rgba(38, 52, 41, .12);
+  }
+  .motion-track { color: rgba(41, 49, 43, .65); }
+  .motion-track.backward { color: rgba(128, 99, 48, .72); }
+  .hero {
+    border-radius: 20px;
+    min-height: 500px;
+    border-color: rgba(55, 70, 58, .16);
+    background: #f8f9f4;
+  }
+  .hero-art::before {
+    background:
+      linear-gradient(100deg, rgba(248,249,244,.86) 18%, rgba(248,249,244,.2) 66%, rgba(248,249,244,.74) 100%),
+      url("hero.png") center / cover no-repeat;
+    animation: softBreathe 2s ease-in-out infinite;
+  }
+  .hero-art::after {
+    background:
+      linear-gradient(180deg, rgba(248,249,244,.05) 0%, rgba(248,249,244,.76) 84%),
+      radial-gradient(circle at 74% 30%, rgba(215, 181, 109, .17) 0%, transparent 30%);
+    animation: softBreathe 2.2s ease-in-out infinite reverse;
+  }
+  .hero-gate { opacity: .24; }
+  .noren-breeze { width: 84%; opacity: .88; }
+  .hero-sub { color: #4a514b; }
+  .chip {
+    border-color: rgba(46, 59, 50, .22);
+    color: #3f463f;
+    background: rgba(255,255,255,.56);
+  }
+  .btn-secondary {
+    color: #222820;
+    border-color: rgba(40, 50, 42, .25);
+    background: rgba(255,255,255,.72);
+  }
+  .section, .bottom-cta {
+    border-color: rgba(45, 59, 48, .16);
+    background: rgba(255,255,255,.84);
+  }
+  .card, .panel {
+    border-color: rgba(48, 62, 50, .15);
+    background: rgba(255,255,255,.74);
+  }
+  .card-name, .section-title, .guide-name { color: #1f2620; }
+  .card-desc, .guide-meta, .bottom-cta p { color: #4b544c; }
+  .card-sub, .section-kicker, .card-price, .step-no { color: #8d6b32; }
+  .step-no { background: rgba(215,181,109,.2); }
+  footer { color: #5a6458; }
   .hero-inner { padding: 22px 16px 24px; }
   .section, .bottom-cta { border-radius: 16px; }
   .section-head, .services, .split, .bottom-cta { padding-left: 16px; padding-right: 16px; }
+  .top-nav { gap: 12px; }
+  .top-nav-links { gap: 12px; }
+  .motion-track { font-size: 10px; letter-spacing: .14em; }
 }
 </style>
 </head>
@@ -333,9 +538,33 @@ footer {
     <button class="lang-btn" type="button" data-lang="zh" aria-pressed="false">中文</button>
     <button class="lang-btn" type="button" data-lang="ko" aria-pressed="false">한국어</button>
   </div>
+  <nav class="top-nav">
+    <div class="top-nav-links">
+      <a href="#" data-i18n="nav.home">Home</a>
+      <a href="#services" data-i18n="nav.work">Experiences</a>
+      <a href="#guide" data-i18n="nav.about">About</a>
+      <a href="https://t.me/toruito_claude_bot" data-i18n="nav.contact">Contact</a>
+    </div>
+    <a class="nav-cta" href="https://t.me/toruito_claude_bot"><span data-i18n="nav.cta">Get in touch</span><span>→</span></a>
+  </nav>
+  <div class="motion-zone" aria-hidden="true">
+    <div class="motion-track forward">
+      <span>ASAKUSA LOCAL GUIDE</span><span>SOBA MAKING</span><span>SENTO CULTURE</span><span>XRP PAYMENTS</span><span>EN / 日本語 / 中文 / 한국어</span>
+      <span>ASAKUSA LOCAL GUIDE</span><span>SOBA MAKING</span><span>SENTO CULTURE</span><span>XRP PAYMENTS</span><span>EN / 日本語 / 中文 / 한국어</span>
+    </div>
+    <div class="motion-track backward">
+      <span>WALK • TASTE • DISCOVER</span><span>HIGASHI-KOMAGATA</span><span>CURATED BY LOCALS</span><span>TRAVEL LIGHT</span><span>BOOK IN 60 SECONDS</span>
+      <span>WALK • TASTE • DISCOVER</span><span>HIGASHI-KOMAGATA</span><span>CURATED BY LOCALS</span><span>TRAVEL LIGHT</span><span>BOOK IN 60 SECONDS</span>
+    </div>
+  </div>
 
   <section class="hero">
     <div class="hero-art"></div>
+    <div class="noren-breeze" aria-hidden="true">
+      <div class="noren-strip"></div>
+      <div class="noren-strip"></div>
+      <div class="noren-strip"></div>
+    </div>
     <div class="hero-gate" aria-hidden="true">
       <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -352,12 +581,13 @@ footer {
       </svg>
     </div>
     <div class="hero-inner">
+      <div class="arrow-rail">→ → → → → →</div>
       <div class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="hero.eyebrow">Asakusa Local Experience Hub</span></div>
-      <h1 data-i18n="hero.title">Curated Tokyo Moments, Crafted by Locals</h1>
+      <h1 data-i18n="hero.title">Curated Tokyo Moments, Crafted by <em>Locals</em></h1>
       <p class="hero-sub" data-i18n="hero.sub">From hand-made soba to neighborhood sento culture, Noren creates premium micro-experiences for international travelers in Asakusa.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="https://t.me/toruito_claude_bot" data-i18n="hero.cta">Talk to the AI Guide</a>
-        <a class="btn btn-secondary" href="#services" data-i18n="hero.cta2">View Experiences</a>
+        <a class="btn btn-primary" href="https://t.me/toruito_claude_bot"><span data-i18n="hero.cta">Talk to the AI Guide</span><span class="btn-arrow">→</span></a>
+        <a class="btn btn-secondary" href="#services"><span data-i18n="hero.cta2">View Experiences</span><span class="btn-arrow">→</span></a>
       </div>
       <div class="chips">
         <span class="chip" data-i18n="chip.1">English Friendly</span>
@@ -377,26 +607,31 @@ footer {
         <div class="card-top"><div class="card-name" data-i18n="svc.soba.name">Soba Making Experience</div><div class="card-price">10 XRP</div></div>
         <div class="card-sub" data-i18n="svc.soba.sub">Signature</div>
         <p class="card-desc" data-i18n="svc.soba.desc">Learn from flour to final bowl, then enjoy your own fresh soba on the spot.</p>
+        <p class="card-fiat" data-fiat data-xrp="10">Loading live rate...</p>
       </article>
       <article class="card">
         <div class="card-top"><div class="card-name" data-i18n="svc.tour.name">Standing Soba Tour</div><div class="card-price">5 XRP</div></div>
         <div class="card-sub" data-i18n="svc.tour.sub">Neighborhood Walk</div>
         <p class="card-desc" data-i18n="svc.tour.desc">Taste local favorites and hidden counters selected by an Asakusa resident.</p>
+        <p class="card-fiat" data-fiat data-xrp="5">Loading live rate...</p>
       </article>
       <article class="card">
         <div class="card-top"><div class="card-name" data-i18n="svc.sento.name">Sento Guide</div><div class="card-price">3 XRP</div></div>
         <div class="card-sub" data-i18n="svc.sento.sub">Culture Etiquette</div>
         <p class="card-desc" data-i18n="svc.sento.desc">Discover neighborhood bathhouses and enjoy them with confidence and respect.</p>
+        <p class="card-fiat" data-fiat data-xrp="3">Loading live rate...</p>
       </article>
       <article class="card">
         <div class="card-top"><div class="card-name" data-i18n="svc.luggage.name">Luggage Storage</div><div class="card-price">2 XRP</div></div>
         <div class="card-sub" data-i18n="svc.luggage.sub">Travel Light</div>
         <p class="card-desc" data-i18n="svc.luggage.desc">Drop your bags safely and explore the district without extra weight.</p>
+        <p class="card-fiat" data-fiat data-xrp="2">Loading live rate...</p>
       </article>
       <article class="card">
         <div class="card-top"><div class="card-name" data-i18n="svc.cafe.name">1F Cafe Bar</div><div class="card-price">2 XRP</div></div>
         <div class="card-sub" data-i18n="svc.cafe.sub">Chill Spot</div>
         <p class="card-desc" data-i18n="svc.cafe.desc">Relax with local drinks and connect with Asakusa's evening atmosphere.</p>
+        <p class="card-fiat" data-fiat data-xrp="2">Loading live rate...</p>
       </article>
       <article class="card">
         <div class="card-top"><div class="card-name" data-i18n="svc.guest.name">Guesthouse Stay</div><div class="card-price" data-i18n="svc.guest.price">On Request</div></div>
@@ -405,7 +640,7 @@ footer {
       </article>
     </div>
     <div class="split">
-      <div class="panel">
+      <div class="panel" id="guide">
         <div class="section-kicker" data-i18n="steps.kicker">How It Works</div>
         <div class="steps">
           <div class="step"><span class="step-no">1</span><p data-i18n="steps.1">Message the AI guide and share your date, group size, and interests.</p></div>
@@ -436,9 +671,19 @@ footer {
 (function () {
   var STORAGE_KEY = "noren-lang";
   var LANGS = ["en", "ja", "zh", "ko"];
+  var fiatState = {
+    rates: null,
+    loading: false,
+    lastLang: "en"
+  };
 
   var T = {
     en: {
+      "nav.home": "Home",
+      "nav.work": "Experiences",
+      "nav.about": "About",
+      "nav.contact": "Contact",
+      "nav.cta": "Get in touch",
       "hero.eyebrow": "Asakusa Local Experience Hub",
       "hero.title": "Curated Tokyo Moments, Crafted by Locals",
       "hero.sub": "From hand-made soba to neighborhood sento culture, Noren creates premium micro-experiences for international travelers in Asakusa.",
@@ -482,6 +727,11 @@ footer {
       "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     },
     ja: {
+      "nav.home": "ホーム",
+      "nav.work": "体験",
+      "nav.about": "案内",
+      "nav.contact": "連絡",
+      "nav.cta": "お問い合わせ",
       "hero.eyebrow": "浅草ローカル体験ハブ",
       "hero.title": "地元がつくる、浅草の特別な時間",
       "hero.sub": "手打ちそば体験から銭湯文化まで。Norenは海外旅行者向けに、浅草の上質なマイクロ体験を提供します。",
@@ -525,6 +775,11 @@ footer {
       "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     },
     zh: {
+      "nav.home": "首页",
+      "nav.work": "体验",
+      "nav.about": "关于",
+      "nav.contact": "联系",
+      "nav.cta": "立即联系",
       "hero.eyebrow": "浅草在地体验中心",
       "hero.title": "由本地人打造的东京体验",
       "hero.sub": "从手打荞麦到钱汤文化，Noren 为国际游客提供高品质浅草微旅行体验。",
@@ -568,6 +823,11 @@ footer {
       "footer": "OpenClaw x XRPL | Noren Asakusa 2026"
     },
     ko: {
+      "nav.home": "홈",
+      "nav.work": "체험",
+      "nav.about": "소개",
+      "nav.contact": "문의",
+      "nav.cta": "문의하기",
       "hero.eyebrow": "아사쿠사 로컬 체험 허브",
       "hero.title": "로컬이 만드는 도쿄의 특별한 순간",
       "hero.sub": "수타 소바부터 센토 문화까지, Noren은 해외 여행자를 위한 프리미엄 아사쿠사 체험을 제공합니다.",
@@ -622,7 +882,7 @@ footer {
     for (var i = 0; i < nodes.length; i++) {
       var key = nodes[i].getAttribute("data-i18n");
       if (map[key] !== undefined) {
-        nodes[i].innerText = map[key];
+        nodes[i].textContent = map[key];
       }
     }
     var buttons = document.querySelectorAll(".lang-btn");
@@ -632,6 +892,55 @@ footer {
       buttons[b].setAttribute("aria-pressed", isActive ? "true" : "false");
     }
     try { localStorage.setItem(STORAGE_KEY, safeLang); } catch (e) {}
+    fiatState.lastLang = safeLang;
+    renderFiatPrices(safeLang);
+    ensureXrpRates();
+  }
+
+  function fiatConfigForLang(lang) {
+    if (lang === "ja") return { currency: "JPY", locale: "ja-JP" };
+    if (lang === "zh") return { currency: "CNY", locale: "zh-CN" };
+    return { currency: "USD", locale: "en-US" };
+  }
+
+  function renderFiatPrices(lang) {
+    var cfg = fiatConfigForLang(lang);
+    var fiatNodes = document.querySelectorAll("[data-fiat]");
+    for (var i = 0; i < fiatNodes.length; i++) {
+      var node = fiatNodes[i];
+      var xrp = Number(node.getAttribute("data-xrp") || "0");
+      if (!fiatState.rates || !fiatState.rates[cfg.currency] || xrp <= 0) {
+        node.textContent = lang === "ja" ? "レート取得中..." : lang === "zh" ? "汇率加载中..." : lang === "ko" ? "환율 불러오는 중..." : "Loading live rate...";
+        continue;
+      }
+      var fiatValue = xrp * fiatState.rates[cfg.currency];
+      var formatted = new Intl.NumberFormat(cfg.locale, {
+        style: "currency",
+        currency: cfg.currency,
+        maximumFractionDigits: cfg.currency === "JPY" ? 0 : 2
+      }).format(fiatValue);
+      node.textContent = "≈ " + formatted;
+    }
+  }
+
+  function ensureXrpRates() {
+    if (fiatState.rates || fiatState.loading) return;
+    fiatState.loading = true;
+    fetch("https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=usd,jpy,cny")
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data || !data.ripple) return;
+        fiatState.rates = {
+          USD: Number(data.ripple.usd || 0),
+          JPY: Number(data.ripple.jpy || 0),
+          CNY: Number(data.ripple.cny || 0)
+        };
+      })
+      .catch(function () {})
+      .finally(function () {
+        fiatState.loading = false;
+        renderFiatPrices(fiatState.lastLang);
+      });
   }
 
   var initial = "en";
