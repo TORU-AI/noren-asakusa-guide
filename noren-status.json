@@ -1,0 +1,46 @@
+{
+  "isOpen": true,
+  "guide": {
+    "name": "Toru",
+    "level": "Google Local Guide Lv.7",
+    "languages": [
+      "日本語",
+      "English"
+    ],
+    "location": "Higashi-Komagata, Asakusa, Tokyo"
+  },
+  "services": [
+    {
+      "id": "soba",
+      "name": "立ち食いそばツアー",
+      "price_xrp": 5,
+      "emoji": "🍜"
+    },
+    {
+      "id": "sento",
+      "name": "銭湯ガイド",
+      "price_xrp": 3,
+      "emoji": "♨️"
+    },
+    {
+      "id": "bar",
+      "name": "カフェバー（1F）",
+      "price_xrp": 2,
+      "emoji": "🍺"
+    },
+    {
+      "id": "tip",
+      "name": "チップを送る",
+      "price_xrp": 1,
+      "emoji": "🙏"
+    }
+  ],
+  "message": {
+    "ja": "のれんが上がっています。今日は案内できます！",
+    "en": "Noren is up! I'm available today as your local guide.",
+    "zh": "暖帘已挂起！今天我可以为您导览。",
+    "ko": "노렌이 걸려 있어요! 오늘 현지 가이드로 안내해 드릴게요.",
+    "fr": "Le Noren est levé ! Je suis disponible aujourd'hui comme guide local."
+  },
+  "openedAt": "2026-05-02T01:13:07.241Z"
+}

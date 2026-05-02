@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noren 🏮 Asakusa Local Experience</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #1a1008;
+    color: #f5e6c8;
+    min-height: 100vh;
+  }
+  .hero {
+    text-align: center;
+    padding: 60px 24px 40px;
+    background: linear-gradient(180deg, #2d1a05 0%, #1a1008 100%);
+  }
+  .noren-icon { font-size: 72px; margin-bottom: 16px; }
+  .status-badge {
+    display: inline-block;
+    background: #c0392b;
+    color: white;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .status-badge.open { background: #27ae60; }
+  h1 {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-size: 16px;
+    color: #c9a96e;
+    margin-bottom: 8px;
+  }
+  .sub {
+    font-size: 13px;
+    color: #8a7a5a;
+  }
+  .guide-card {
+    margin: 32px 24px;
+    background: #2a1e0e;
+    border: 1px solid #4a3520;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .guide-avatar {
+    width: 60px; height: 60px;
+    background: #c0392b;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .guide-info h3 { font-size: 17px; font-weight: bold; margin-bottom: 4px; }
+  .guide-info p { font-size: 13px; color: #c9a96e; }
+  .guide-badge {
+    font-size: 11px;
+    background: #1a3a2a;
+    color: #4caf90;
+    padding: 3px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  .section { padding: 0 24px 32px; }
+  .section h2 {
+    font-size: 13px;
+    color: #8a7a5a;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .service-list { display: flex; flex-direction: column; gap: 12px; }
+  .service-item {
+    background: #2a1e0e;
+    border: 1px solid #4a3520;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .service-left { display: flex; align-items: center; gap: 12px; }
+  .service-emoji { font-size: 28px; }
+  .service-name { font-size: 15px; font-weight: bold; }
+  .service-desc { font-size: 12px; color: #8a7a5a; margin-top: 2px; }
+  .service-price {
+    font-size: 14px;
+    font-weight: bold;
+    color: #c9a96e;
+    text-align: right;
+  }
+  .service-price span { font-size: 11px; color: #8a7a5a; display: block; }
+  .cta-section {
+    padding: 24px;
+    text-align: center;
+  }
+  .cta-btn {
+    display: block;
+    background: #c0392b;
+    color: white;
+    text-decoration: none;
+    padding: 18px 32px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  .cta-sub { font-size: 13px; color: #8a7a5a; }
+  .location {
+    margin: 0 24px 32px;
+    background: #2a1e0e;
+    border: 1px solid #4a3520;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .location h3 { font-size: 13px; color: #8a7a5a; margin-bottom: 8px; letter-spacing: 1px; }
+  .location p { font-size: 14px; line-height: 1.6; }
+  .location p small { color: #8a7a5a; font-size: 12px; }
+  .lang-switch {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 24px 0;
+  }
+  .lang-btn {
+    background: #2a1e0e;
+    border: 1px solid #4a3520;
+    color: #c9a96e;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #4a3520;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-switch">
+  <button class="lang-btn active">EN</button>
+  <button class="lang-btn">日本語</button>
+  <button class="lang-btn">中文</button>
+  <button class="lang-btn">한국어</button>
+</div>
+
+<div class="hero">
+  <div class="noren-icon">🏮</div>
+  <div class="status-badge open">● OPEN TODAY</div>
+  <h1>Noren</h1>
+  <p class="tagline">Authentic Asakusa Experiences</p>
+  <p class="sub">Higashi-Komagata, Asakusa, Tokyo</p>
+</div>
+
+<div class="guide-card">
+  <div class="guide-avatar">🍜</div>
+  <div class="guide-info">
+    <h3>Toru</h3>
+    <p>Standing soba researcher & local guide</p>
+    <span class="guide-badge">✓ Google Local Guide Lv.7 · 13,375pts</span>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Experiences</h2>
+  <div class="service-list">
+    <div class="service-item">
+      <div class="service-left">
+        <span class="service-emoji">🍜</span>
+        <div>
+          <div class="service-name">Soba Making Experience</div>
+          <div class="service-desc">Make & eat your own soba at our cafe bar</div>
+        </div>
+      </div>
+      <div class="service-price">
+        Book via<span>Telegram</span>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-left">
+        <span class="service-emoji">🧳</span>
+        <div>
+          <div class="service-name">Luggage Storage</div>
+          <div class="service-desc">Drop bags, explore freely</div>
+        </div>
+      </div>
+      <div class="service-price">
+        2 XRP<span>~¥300</span>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-left">
+        <span class="service-emoji">♨️</span>
+        <div>
+          <div class="service-name">Sento Guide</div>
+          <div class="service-desc">Bathhouse tour with full etiquette guide</div>
+        </div>
+      </div>
+      <div class="service-price">
+        3 XRP<span>~¥450</span>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-left">
+        <span class="service-emoji">🍺</span>
+        <div>
+          <div class="service-name">1F Cafe Bar</div>
+          <div class="service-desc">Drinks in a local atmosphere</div>
+        </div>
+      </div>
+      <div class="service-price">
+        2 XRP<span>~¥300</span>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-left">
+        <span class="service-emoji">🏠</span>
+        <div>
+          <div class="service-name">Guesthouse Stay</div>
+          <div class="service-desc">Sleep in Asakusa, wake up local</div>
+        </div>
+      </div>
+      <div class="service-price">
+        Ask us<span>via Telegram</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <a href="https://t.me/MyClaude_bot" class="cta-btn">💬 Chat with our AI Guide</a>
+  <p class="cta-sub">Available 24/7 · English · 日本語 · 中文 · 한국어</p>
+</div>
+
+<div class="location">
+  <h3>LOCATION</h3>
+  <p>
+    Higashi-Komagata 1-chome, Asakusa<br>
+    <small>東京都墨田区東駒形1丁目</small><br><br>
+    <small>🚇 Asakusa St. (3 min walk) · Honjo-Azumabashi St. (2 min walk)</small>
+  </p>
+</div>
+
+<footer>
+  Powered by OpenClaw × XRPL · Noren 2026
+</footer>
+
+</body>
+</html>
