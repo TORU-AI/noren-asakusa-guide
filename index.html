@@ -178,8 +178,10 @@ body.lang-ko { font-family: "Noto Sans KR", Inter, sans-serif; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, rgba(8,8,8,.94) 18%, rgba(8,8,8,.15) 66%, rgba(8,8,8,.9) 100%),
-    url("hero.png") center / cover no-repeat;
+    linear-gradient(100deg, rgba(8,8,8,.82) 18%, rgba(8,8,8,.2) 66%, rgba(8,8,8,.84) 100%),
+    radial-gradient(circle at 70% 24%, rgba(215,181,109,.22) 0%, transparent 33%),
+    linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,0) 40%),
+    linear-gradient(180deg, #1a1a1a 0%, #101010 100%);
   opacity: .9;
 }
 
@@ -389,6 +391,19 @@ h1 em {
 .card-price { color: var(--gold); font-weight: 600; white-space: nowrap; }
 .card-sub { color: #e6ce98; font-size: 13px; margin-bottom: 8px; }
 .card-desc { color: #b6b6b1; font-size: 14px; line-height: 1.6; }
+.card-media {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  aspect-ratio: 16 / 9;
+}
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .card-fiat {
   margin-top: 8px;
   font-size: 12px;
@@ -486,7 +501,8 @@ footer {
   .hero-art::before {
     background:
       linear-gradient(100deg, rgba(248,249,244,.86) 18%, rgba(248,249,244,.2) 66%, rgba(248,249,244,.74) 100%),
-      url("hero.png") center / cover no-repeat;
+      radial-gradient(circle at 74% 28%, rgba(215,181,109,.24) 0%, transparent 35%),
+      linear-gradient(180deg, rgba(255,255,255,.82) 0%, rgba(242,244,237,.94) 100%);
     animation: softBreathe 2s ease-in-out infinite;
   }
   .hero-art::after {
@@ -604,6 +620,9 @@ footer {
     </div>
     <div class="services">
       <article class="card">
+        <div class="card-media">
+          <img src="hero.png" alt="Soba making experience">
+        </div>
         <div class="card-top"><div class="card-name" data-i18n="svc.soba.name">Soba Making Experience</div><div class="card-price">10 XRP</div></div>
         <div class="card-sub" data-i18n="svc.soba.sub">Signature</div>
         <p class="card-desc" data-i18n="svc.soba.desc">Learn from flour to final bowl, then enjoy your own fresh soba on the spot.</p>
