@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9ed9f4"/>
+      <stop offset="100%" stop-color="#6bbbe0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <rect x="70" y="70" width="660" height="300" rx="24" fill="#eaf7ff" opacity=".8"/>
+  <rect x="130" y="240" width="540" height="100" rx="20" fill="#84d5f0"/>
+  <circle cx="245" cy="220" r="42" fill="#f1dcc1"/>
+  <rect x="212" y="255" width="66" height="70" rx="12" fill="#4d89a8"/>
+  <circle cx="380" cy="220" r="42" fill="#f1dcc1"/>
+  <rect x="347" y="255" width="66" height="70" rx="12" fill="#527b91"/>
+  <circle cx="515" cy="220" r="42" fill="#f1dcc1"/>
+  <rect x="482" y="255" width="66" height="70" rx="12" fill="#44667f"/>
+  <path d="M140 150C170 118 210 118 236 150" stroke="#ffffff" stroke-width="7" fill="none" opacity=".85"/>
+  <path d="M280 135C310 103 350 103 376 135" stroke="#ffffff" stroke-width="7" fill="none" opacity=".85"/>
+  <path d="M420 148C450 116 490 116 516 148" stroke="#ffffff" stroke-width="7" fill="none" opacity=".85"/>
+</svg>
