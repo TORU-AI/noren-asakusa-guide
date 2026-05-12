@@ -346,6 +346,11 @@
         <span class="rdot"></span>
         <span><div class="on">金額そのまま ＋ 現場管理費（小計の 20%）</div><div class="od">元の金額は変更せず、小計の 20% を現場管理費として追加。</div></span>
       </label>
+      <label class="opt" id="okn30">
+        <input type="radio" name="mk" value="kanri30"/>
+        <span class="rdot"></span>
+        <span><div class="on">金額そのまま ＋ 現場管理費（小計の 30%）</div><div class="od">元の金額は変更せず、小計の 30% を現場管理費として追加。</div></span>
+      </label>
     </div>
   </div>
 
@@ -416,8 +421,10 @@ function markup(items, type) {
   } else {
     rows = items.map(i => ({ ...i, amount: (i.unit_price||0)*(i.quantity||1) }));
     const base = rows.reduce((s,i) => s+i.amount, 0);
-    const kfee = Math.floor(base * 0.2);
-    extra = [{ description:'現場管理費', quantity:1, unit_price:kfee, amount:kfee }];
+    const rate = type === 'kanri30' ? 0.3 : 0.2;
+    const kfee = Math.floor(base * rate);
+    const pct  = type === 'kanri30' ? 30 : 20;
+    extra = [{ description:`現場管理費（${pct}%）`, quantity:1, unit_price:kfee, amount:kfee }];
   }
   const all = [...rows, ...extra];
   const sub = all.reduce((s,i) => s+i.amount, 0);
