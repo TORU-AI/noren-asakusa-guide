@@ -38,7 +38,7 @@ def extract_invoice_data(file_content: bytes, content_type: str) -> dict:
     if content_type == "application/pdf":
         encoded = base64.standard_b64encode(file_content).decode("utf-8")
         message = client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-haiku-4-5-20251001",
             max_tokens=1024,
             messages=[
                 {
@@ -60,7 +60,7 @@ def extract_invoice_data(file_content: bytes, content_type: str) -> dict:
     else:
         encoded = base64.standard_b64encode(file_content).decode("utf-8")
         message = client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-haiku-4-5-20251001",
             max_tokens=1024,
             messages=[
                 {
