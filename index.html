@@ -549,7 +549,7 @@ function buildInv(data, type, overrides, docType) {
   <div class="i-head">
     <div class="i-client">
       <div class="i-cname">${clientName ? esc(clientName)+'　'+((/株式会社|有限会社|合同会社|合資会社|合名会社|法人|組合|協会|財団|機構|センター|工業|建設|設備/).test(clientName) ? '御中' : '様') : '　　　　　　　　　御中'}</div>
-      <div class="i-date">請求日：${dateStr}${dueStr ? '<br>支払期限：'+dueStr : ''}</div>
+      <div class="i-date">請求日：${dateStr}${dueStr ? '<br>支払期限：'+dueStr : ''}${overrides.siteName ? '<br>現場名：'+esc(overrides.siteName) : ''}</div>
     </div>
     <div class="i-co">
       <strong>${CO.name}</strong><br>
@@ -559,7 +559,7 @@ function buildInv(data, type, overrides, docType) {
     </div>
   </div>
   <hr class="i-hr">
-  <p class="i-greet">${isEstimate ? '下記の通り、お見積り申し上げます。' : '下記の通り、ご請求申し上げます。'}${overrides.siteName ? '<br><strong>現場名：'+esc(overrides.siteName)+'</strong>' : ''}</p>
+  <p class="i-greet">${isEstimate ? '下記の通り、お見積り申し上げます。' : '下記の通り、ご請求申し上げます。'}</p>
   <div class="i-totbox">
     <div class="i-totlbl">合計金額（税込）</div>
     <div class="i-totamt">${yen(total)}</div>
