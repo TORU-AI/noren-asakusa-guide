@@ -112,6 +112,21 @@
     .fp-rm { background: none; border: none; cursor: pointer; color: #aaa; font-size: 18px; padding: 4px; }
     .fp-rm:hover { color: #e94560; }
 
+    /* Detail fields */
+    .fields { display: flex; flex-direction: column; gap: 16px; }
+    .field-row { display: flex; gap: 14px; }
+    .field-row .fg { flex: 1; }
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg label { font-size: .82rem; font-weight: 600; color: #444; }
+    .fg input[type="text"], .fg input[type="date"] {
+      padding: 10px 14px;
+      border: 1.5px solid #e0e4eb; border-radius: 8px;
+      font-size: .92rem;
+      font-family: inherit;
+      width: 100%;
+    }
+    .fg input:focus { outline: none; border-color: #0f3460; }
+
     /* Options */
     .opts { display: flex; flex-direction: column; gap: 12px; }
     .opt {
@@ -293,7 +308,28 @@
 
   <!-- Step 2 -->
   <div class="card">
-    <div class="card-title"><span class="step">2</span>金額の計算方法を選択</div>
+    <div class="card-title"><span class="step">2</span>請求先・日付を入力</div>
+    <div class="fields">
+      <div class="fg">
+        <label>宛名（御中）</label>
+        <input type="text" id="client-name" placeholder="株式会社〇〇"/>
+      </div>
+      <div class="field-row">
+        <div class="fg">
+          <label>請求日</label>
+          <input type="date" id="invoice-date"/>
+        </div>
+        <div class="fg">
+          <label>支払期限</label>
+          <input type="date" id="due-date"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="card">
+    <div class="card-title"><span class="step">3</span>金額の計算方法を選択</div>
     <div class="opts">
       <label class="opt sel" id="o20">
         <input type="radio" name="mk" value="20" checked/>
@@ -313,9 +349,9 @@
     </div>
   </div>
 
-  <!-- Step 3 -->
+  <!-- Step 4 -->
   <div class="card">
-    <div class="card-title"><span class="step">3</span>請求書を生成</div>
+    <div class="card-title"><span class="step">4</span>請求書を生成</div>
     <button id="go" disabled>
       <span>📋</span><span id="gt">ファイルを選択してください</span>
     </button>
@@ -469,9 +505,11 @@ async function extract(file, key) {
 }
 
 // ── Invoice HTML builder ───────────────────────────────────
-function buildInv(data, type) {
+function buildInv(data, type, overrides) {
   const { all, sub, tax, total } = markup(data.items||[], type);
-  const dateStr = data.invoice_date ? fmtDate(data.invoice_date) : today();
+  const clientName = overrides.clientName || data.client_name || '';
+  const dateStr    = overrides.invoiceDate ? fmtDate(overrides.invoiceDate) : (data.invoice_date ? fmtDate(data.invoice_date) : today());
+  const dueStr     = overrides.dueDate ? fmtDate(overrides.dueDate) : '';
   const rows = [...all];
   while (rows.length < 5) rows.push(null);
 
@@ -486,8 +524,8 @@ function buildInv(data, type) {
   <div class="i-title">請　求　書</div>
   <div class="i-head">
     <div class="i-client">
-      <div class="i-cname">${data.client_name ? esc(data.client_name)+'　御中' : '　　　　　　　　　御中'}</div>
-      <div class="i-date">請求日：${dateStr}${data.invoice_number ? '<br>請求番号：'+esc(data.invoice_number) : ''}</div>
+      <div class="i-cname">${clientName ? esc(clientName)+'　御中' : '　　　　　　　　　御中'}</div>
+      <div class="i-date">請求日：${dateStr}${dueStr ? '<br>支払期限：'+dueStr : ''}${data.invoice_number ? '<br>請求番号：'+esc(data.invoice_number) : ''}</div>
     </div>
     <div class="i-co">
       <strong>${CO.name}</strong><br>
@@ -529,9 +567,12 @@ function buildInv(data, type) {
 }
 
 // ── UI ─────────────────────────────────────────────────────
-const ki  = document.getElementById('ki');
-const kst = document.getElementById('kst');
-const dz  = document.getElementById('drop-zone');
+const ki   = document.getElementById('ki');
+const kst  = document.getElementById('kst');
+const cinp = document.getElementById('client-name');
+const dinp = document.getElementById('invoice-date');
+const duei = document.getElementById('due-date');
+const dz   = document.getElementById('drop-zone');
 const fii = document.getElementById('fi');
 const fp  = document.getElementById('fp');
 const fic = document.getElementById('fic');
@@ -545,6 +586,10 @@ const ov  = document.getElementById('ov');
 const inv = document.getElementById('inv');
 
 let selFile = null;
+
+// Set invoice date default to today
+const todayISO = () => { const d=new Date(); return d.toISOString().slice(0,10); };
+dinp.value = todayISO();
 
 // Restore saved key
 const savedKey = localStorage.getItem('inv_api_key');
@@ -603,7 +648,13 @@ go.onclick = async () => {
 
   try {
     const data = await extract(selFile, key);
-    inv.innerHTML = buildInv(data, type);
+    if (!cinp.value.trim() && data.client_name) cinp.value = data.client_name;
+    const overrides = {
+      clientName:  cinp.value.trim(),
+      invoiceDate: dinp.value,
+      dueDate:     duei.value
+    };
+    inv.innerHTML = buildInv(data, type, overrides);
     ov.classList.add('vis');
     st.className = 'st ok';
     st.textContent = '✅ 変換完了。「PDFとして保存」をクリックして印刷ダイアログからPDF保存してください。';
