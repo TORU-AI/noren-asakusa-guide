@@ -532,7 +532,7 @@ function buildInv(data, type, overrides) {
   <div class="i-head">
     <div class="i-client">
       <div class="i-cname">${clientName ? esc(clientName)+'　御中' : '　　　　　　　　　御中'}</div>
-      <div class="i-date">請求日：${dateStr}${dueStr ? '<br>支払期限：'+dueStr : ''}${data.invoice_number ? '<br>請求番号：'+esc(data.invoice_number) : ''}</div>
+      <div class="i-date">請求日：${dateStr}${dueStr ? '<br>支払期限：'+dueStr : ''}</div>
     </div>
     <div class="i-co">
       <strong>${CO.name}</strong><br>
