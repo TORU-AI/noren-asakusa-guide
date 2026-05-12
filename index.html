@@ -324,6 +324,10 @@
         <label>宛名（御中）</label>
         <input type="text" id="client-name" placeholder="株式会社〇〇"/>
       </div>
+      <div class="fg">
+        <label>作業場所・現場名</label>
+        <input type="text" id="site-name" placeholder="〇〇マンション101号室　内装工事"/>
+      </div>
       <div class="field-row">
         <div class="fg">
           <label>請求日</label>
@@ -555,7 +559,7 @@ function buildInv(data, type, overrides, docType) {
     </div>
   </div>
   <hr class="i-hr">
-  <p class="i-greet">下記の通り、ご請求申し上げます。</p>
+  <p class="i-greet">${isEstimate ? '下記の通り、お見積り申し上げます。' : '下記の通り、ご請求申し上げます。'}${overrides.siteName ? '<br><strong>現場名：'+esc(overrides.siteName)+'</strong>' : ''}</p>
   <div class="i-totbox">
     <div class="i-totlbl">合計金額（税込）</div>
     <div class="i-totamt">${yen(total)}</div>
@@ -598,6 +602,7 @@ function buildInv(data, type, overrides, docType) {
 const ki   = document.getElementById('ki');
 const kst  = document.getElementById('kst');
 const cinp = document.getElementById('client-name');
+const sinp = document.getElementById('site-name');
 const dinp = document.getElementById('invoice-date');
 const duei = document.getElementById('due-date');
 const dz   = document.getElementById('drop-zone');
@@ -684,6 +689,7 @@ go.onclick = async () => {
     if (!cinp.value.trim() && data.client_name) cinp.value = data.client_name;
     const overrides = {
       clientName:  cinp.value.trim(),
+      siteName:    sinp.value.trim(),
       invoiceDate: dinp.value,
       dueDate:     duei.value
     };
