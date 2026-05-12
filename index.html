@@ -258,13 +258,16 @@
     .i-bc { font-size: 9pt; line-height: 1.7; }
 
     /* ── Print ───────────────────────────────────────────── */
+    @page { size: A4; margin: 0; }
+
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       body > *:not(#ov) { display: none !important; }
+      footer { display: none !important; }
       #ov { display: block !important; background: none; padding: 0; overflow: visible; position: static; }
       .ov-actions { display: none !important; }
       #inv {
-        width: 100%; margin: 0; padding: 8mm;
+        width: 100%; margin: 0; padding: 9mm;
         box-shadow: none; min-height: unset;
         font-size: 8.5pt; line-height: 1.4;
       }
@@ -282,7 +285,6 @@
       .i-bot    { font-size: 8pt; }
       .i-sh     { padding: 1mm 2mm; margin-bottom: 1mm; }
       .i-bank, .i-notes { padding: 3mm; }
-      @page { size: A4; margin: 0; }
     }
   </style>
 </head>
