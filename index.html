@@ -423,8 +423,7 @@ function markup(items, type) {
     const base = rows.reduce((s,i) => s+i.amount, 0);
     const rate = type === 'kanri30' ? 0.3 : 0.2;
     const kfee = Math.floor(base * rate);
-    const pct  = type === 'kanri30' ? 30 : 20;
-    extra = [{ description:`現場管理費（${pct}%）`, quantity:1, unit_price:kfee, amount:kfee }];
+    extra = [{ description:'現場管理費', quantity:1, unit_price:kfee, amount:kfee }];
   }
   const all = [...rows, ...extra];
   const sub = all.reduce((s,i) => s+i.amount, 0);
