@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>請求書変換アプリ｜ネクストパートナー株式会社</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,"Yu Gothic",sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);
+      color: #fff;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    }
+    .logo {
+      width: 44px; height: 44px;
+      background: #e94560;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    header h1 { font-size: 1.15rem; font-weight: 700; }
+    header p  { font-size: .78rem; opacity: .7; margin-top: 2px; }
+
+    main {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: .95rem; font-weight: 700; color: #333;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .step {
+      width: 24px; height: 24px;
+      background: #0f3460; color: #fff;
+      border-radius: 50%;
+      font-size: .78rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* API key */
+    .key-row { display: flex; gap: 8px; }
+    .key-input {
+      flex: 1; padding: 10px 14px;
+      border: 1.5px solid #e0e4eb; border-radius: 8px;
+      font-size: .88rem; font-family: monospace;
+    }
+    .key-input:focus { outline: none; border-color: #0f3460; }
+    .key-btn {
+      padding: 10px 18px;
+      background: #0f3460; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: .88rem; cursor: pointer;
+      white-space: nowrap;
+    }
+    .key-status { margin-top: 8px; font-size: .78rem; color: #888; }
+    .key-status.ok { color: #166534; }
+
+    /* Upload */
+    #drop-zone {
+      border: 2px dashed #c5cad3;
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    #drop-zone:hover, #drop-zone.over { border-color: #0f3460; background: #f4f7ff; }
+    #drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .up-icon { font-size: 40px; margin-bottom: 10px; }
+    .up-text { color: #555; font-size: .92rem; }
+    .up-hint { color: #aaa; font-size: .78rem; margin-top: 6px; }
+
+    .fp {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 16px; padding: 12px 16px;
+      background: #f4f7ff; border-radius: 8px;
+      font-size: .88rem;
+    }
+    .fp.hidden { display: none; }
+    .fp-icon { font-size: 22px; }
+    .fp-info { flex: 1; overflow: hidden; }
+    .fp-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fp-size { color: #888; font-size: .78rem; margin-top: 2px; }
+    .fp-rm { background: none; border: none; cursor: pointer; color: #aaa; font-size: 18px; padding: 4px; }
+    .fp-rm:hover { color: #e94560; }
+
+    /* Options */
+    .opts { display: flex; flex-direction: column; gap: 12px; }
+    .opt {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 18px;
+      border: 2px solid #e5e8ef; border-radius: 12px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .opt:hover  { border-color: #0f3460; background: #f9fbff; }
+    .opt input  { display: none; }
+    .opt.sel    { border-color: #0f3460; background: #f0f4ff; }
+    .rdot {
+      width: 20px; height: 20px;
+      border: 2px solid #c5cad3; border-radius: 50%;
+      flex-shrink: 0; margin-top: 2px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .opt.sel .rdot { border-color: #0f3460; background: #0f3460; }
+    .opt.sel .rdot::after {
+      content: ""; width: 8px; height: 8px;
+      background: #fff; border-radius: 50%;
+    }
+    .on { font-weight: 700; font-size: .95rem; color: #222; }
+    .od { font-size: .80rem; color: #666; margin-top: 3px; line-height: 1.5; }
+
+    /* Submit */
+    #go {
+      width: 100%; padding: 16px;
+      background: #0f3460; color: #fff;
+      border: none; border-radius: 12px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: background .2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    #go:hover:not(:disabled) { background: #1a4a8a; }
+    #go:disabled { background: #a0aec0; cursor: not-allowed; }
+
+    .st { display: none; padding: 14px 18px; border-radius: 10px; font-size: .88rem; margin-top: 16px; line-height: 1.5; }
+    .st.load { display: flex; align-items: center; gap: 10px; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .st.ok   { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .st.err  { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    .spin {
+      width: 20px; height: 20px;
+      border: 3px solid #bfdbfe; border-top-color: #1e40af;
+      border-radius: 50%;
+      animation: sp .8s linear infinite; flex-shrink: 0;
+    }
+    @keyframes sp { to { transform: rotate(360deg); } }
+
+    footer { text-align: center; font-size: .75rem; color: #aaa; padding: 24px 16px; }
+
+    /* ── Invoice overlay ─────────────────────────────────── */
+    #ov {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.65); z-index: 100;
+      overflow-y: auto; padding: 20px;
+    }
+    #ov.vis { display: flex; align-items: flex-start; justify-content: center; }
+
+    .ov-actions {
+      position: fixed; top: 16px; right: 16px;
+      display: flex; gap: 10px; z-index: 101;
+    }
+    .btn-pdf {
+      padding: 12px 24px;
+      background: #0f3460; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: .95rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-cls {
+      padding: 12px 20px;
+      background: #fff; color: #333;
+      border: none; border-radius: 10px;
+      font-size: .95rem; cursor: pointer;
+    }
+
+    /* ── Invoice document ────────────────────────────────── */
+    #inv {
+      background: #fff;
+      width: 210mm; min-height: 297mm;
+      padding: 15mm;
+      font-family: "Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,"Yu Gothic",sans-serif;
+      font-size: 10pt; line-height: 1.5; color: #000;
+      box-shadow: 0 4px 40px rgba(0,0,0,.2);
+      margin-top: 64px;
+    }
+
+    .i-title {
+      text-align: center; font-size: 22pt; font-weight: 700;
+      margin-bottom: 6mm; letter-spacing: .2em;
+    }
+    .i-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5mm; }
+    .i-client { flex: 1; }
+    .i-cname  { font-size: 14pt; font-weight: 700; margin-bottom: 2mm; }
+    .i-date   { font-size: 9pt; color: #333; margin-top: 3mm; }
+    .i-co     { text-align: right; font-size: 9pt; line-height: 1.7; }
+    .i-co strong { font-size: 11pt; }
+    .i-hr     { border: none; border-top: 1.5px solid #000; margin: 4mm 0; }
+    .i-greet  { font-size: 9pt; margin-bottom: 4mm; }
+
+    .i-totbox { display: flex; border: 1.5px solid #000; margin-bottom: 5mm; }
+    .i-totlbl {
+      padding: 4mm 6mm; border-right: 1px solid #000;
+      font-size: 10pt; display: flex; align-items: center; width: 35%;
+    }
+    .i-totamt { padding: 4mm 6mm; font-size: 18pt; font-weight: 700; display: flex; align-items: center; flex: 1; }
+
+    .i-tbl { width: 100%; border-collapse: collapse; margin-bottom: 6mm; font-size: 9pt; }
+    .i-tbl th { background: #222; color: #fff; padding: 3mm; text-align: center; border: .5px solid #666; }
+    .i-tbl td { padding: 2.5mm 3mm; border: .5px solid #aaa; }
+    .i-tbl tbody tr:nth-child(even) { background: #f8f8f8; }
+    .i-tbl tfoot tr:last-child { background: #eee; font-weight: 700; }
+    .tl { text-align: left; }
+    .tc { text-align: center; }
+    .tr { text-align: right; }
+
+    .i-bot { display: flex; gap: 0; border: 1px solid #aaa; }
+    .i-bank  { flex: 0 0 60%; padding: 4mm; border-right: .5px solid #aaa; }
+    .i-notes { flex: 1; padding: 4mm; }
+    .i-sh { font-weight: 700; font-size: 9pt; background: #e0e0e0; padding: 1mm 2mm; margin-bottom: 2mm; }
+    .i-bc { font-size: 9pt; line-height: 1.7; }
+
+    /* ── Print ───────────────────────────────────────────── */
+    @media print {
+      body > *:not(#ov) { display: none !important; }
+      #ov { display: block !important; background: none; padding: 0; overflow: visible; position: static; }
+      .ov-actions { display: none !important; }
+      #inv {
+        width: 100%; margin: 0; padding: 15mm;
+        box-shadow: none;
+        page-break-after: avoid;
+      }
+      @page { size: A4; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">N</div>
+  <div>
+    <h1>請求書変換アプリ</h1>
+    <p>ネクストパートナー株式会社</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- API Key -->
+  <div class="card">
+    <div class="card-title">🔑 Anthropic API キー</div>
+    <div class="key-row">
+      <input type="password" id="ki" class="key-input" placeholder="sk-ant-..." autocomplete="off"/>
+      <button class="key-btn" id="ks">保存</button>
+    </div>
+    <div class="key-status" id="kst">APIキーを入力して保存してください（ブラウザのローカルストレージに保存されます）</div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="card">
+    <div class="card-title"><span class="step">1</span>請求書・見積書をアップロード</div>
+    <div id="drop-zone">
+      <input type="file" id="fi" accept=".jpg,.jpeg,.png,.gif,.webp,.pdf"/>
+      <div class="up-icon">📄</div>
+      <div class="up-text">クリックまたはドラッグ＆ドロップ</div>
+      <div class="up-hint">対応形式：JPG・PNG・GIF・WebP・PDF（最大 20MB）</div>
+    </div>
+    <div class="fp hidden" id="fp">
+      <span class="fp-icon" id="fic">📄</span>
+      <div class="fp-info">
+        <div class="fp-name" id="fn"></div>
+        <div class="fp-size" id="fsz"></div>
+      </div>
+      <button class="fp-rm" id="frm">✕</button>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="card">
+    <div class="card-title"><span class="step">2</span>金額の計算方法を選択</div>
+    <div class="opts">
+      <label class="opt sel" id="o20">
+        <input type="radio" name="mk" value="20" checked/>
+        <span class="rdot"></span>
+        <span><div class="on">20%上乗せ</div><div class="od">全品目の単価に 20% を加算。例：100,000円 → 120,000円（税別）</div></span>
+      </label>
+      <label class="opt" id="o40">
+        <input type="radio" name="mk" value="40"/>
+        <span class="rdot"></span>
+        <span><div class="on">40%上乗せ</div><div class="od">全品目の単価に 40% を加算。例：100,000円 → 140,000円（税別）</div></span>
+      </label>
+      <label class="opt" id="okn">
+        <input type="radio" name="mk" value="kanri"/>
+        <span class="rdot"></span>
+        <span><div class="on">金額そのまま ＋ 現場管理費（小計の 20%）</div><div class="od">元の金額は変更せず、小計の 20% を現場管理費として追加。</div></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="card">
+    <div class="card-title"><span class="step">3</span>請求書を生成</div>
+    <button id="go" disabled>
+      <span>📋</span><span id="gt">ファイルを選択してください</span>
+    </button>
+    <div class="st" id="st"></div>
+  </div>
+
+</main>
+
+<footer>© ネクストパートナー株式会社　請求書変換アプリ</footer>
+
+<!-- Invoice overlay -->
+<div id="ov">
+  <div class="ov-actions">
+    <button class="btn-pdf" id="pbtn">🖨️ PDFとして保存</button>
+    <button class="btn-cls" id="cbtn">✕ 閉じる</button>
+  </div>
+  <div id="inv"></div>
+</div>
+
+<script>
+const CO = {
+  name:    'ネクストパートナー株式会社',
+  postal:  '〒130-0005',
+  addr:    '東京都墨田区東駒形１丁目１８−８',
+  tel:     'TEL：03-5637-7845',
+  reg:     '登録番号：T2380001027928'
+};
+const BK = {
+  bank:   'みずほ銀行　六本木支店',
+  type:   '普通　4611447',
+  holder: 'ネクストパートナー株式会社',
+  rep:    '代表取締役　富永義規'
+};
+const TAX   = 0.10;
+const MODEL = 'claude-haiku-4-5-20251001';
+
+const PROMPT = `この画像またはPDFは請求書・見積書・発注書などの書類です。
+以下のJSON形式のみで返してください（他の文字は不要）。
+
+{
+  "client_name": "請求先の会社名または個人名（不明なら空文字）",
+  "invoice_date": "請求日 YYYY-MM-DD形式（不明なら今日）",
+  "invoice_number": "請求書番号（不明なら空文字）",
+  "items": [
+    {"description":"品目名","quantity":数量,"unit_price":税抜単価の整数}
+  ],
+  "notes": "備考（なければ空文字）"
+}
+
+注意: 金額は税抜整数。消費税行はitemsに含めない。`;
+
+// ── utils ──────────────────────────────────────────────────
+const yen = n => '¥' + Math.round(n).toLocaleString('ja-JP');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function markup(items, type) {
+  let rows, extra = [];
+  if (type === '20') {
+    rows = items.map(i => ({ ...i, unit_price: i.unit_price*1.2, amount: i.unit_price*1.2*(i.quantity||1) }));
+  } else if (type === '40') {
+    rows = items.map(i => ({ ...i, unit_price: i.unit_price*1.4, amount: i.unit_price*1.4*(i.quantity||1) }));
+  } else {
+    rows = items.map(i => ({ ...i, amount: (i.unit_price||0)*(i.quantity||1) }));
+    const base = rows.reduce((s,i) => s+i.amount, 0);
+    const kfee = Math.floor(base * 0.2);
+    extra = [{ description:'現場管理費', quantity:1, unit_price:kfee, amount:kfee }];
+  }
+  const all = [...rows, ...extra];
+  const sub = all.reduce((s,i) => s+i.amount, 0);
+  const tax = Math.floor(sub * TAX);
+  return { all, sub, tax, total: sub+tax };
+}
+
+function fmtDate(s) {
+  try { const d=new Date(s); return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`; }
+  catch { return s; }
+}
+const today = () => { const d=new Date(); return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`; };
+const fmtBytes = b => b<1024 ? b+' B' : b<1048576 ? (b/1024).toFixed(1)+' KB' : (b/1048576).toFixed(1)+' MB';
+
+// ── Anthropic API (browser direct) ────────────────────────
+async function toBase64(file) {
+  return new Promise((res,rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+async function extract(file, key) {
+  const b64 = await toBase64(file);
+  const part = file.type === 'application/pdf'
+    ? { type:'document', source:{ type:'base64', media_type:'application/pdf', data:b64 } }
+    : { type:'image',    source:{ type:'base64', media_type:file.type, data:b64 } };
+
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: MODEL, max_tokens: 1024,
+      messages: [{ role:'user', content:[part, {type:'text', text:PROMPT}] }]
+    })
+  });
+  if (!r.ok) { const e=await r.json().catch(()=>({})); throw new Error(e.error?.message||`APIエラー ${r.status}`); }
+  const d = await r.json();
+  const text = d.content[0].text;
+  const m = text.match(/\{[\s\S]*\}/);
+  if (!m) throw new Error('レスポンスの解析に失敗しました');
+  return JSON.parse(m[0]);
+}
+
+// ── Invoice HTML builder ───────────────────────────────────
+function buildInv(data, type) {
+  const { all, sub, tax, total } = markup(data.items||[], type);
+  const dateStr = data.invoice_date ? fmtDate(data.invoice_date) : today();
+  const rows = [...all];
+  while (rows.length < 5) rows.push(null);
+
+  const trows = rows.map(i => i
+    ? `<tr><td class="tl">${esc(i.description)}</td><td class="tc">${Math.round(i.quantity)}</td><td class="tr">${yen(i.unit_price)}</td><td class="tr">${yen(i.amount)}</td></tr>`
+    : `<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>`
+  ).join('');
+
+  const notesHtml = ['振り込み手数料はご負担ください', data.notes&&esc(data.notes)].filter(Boolean).join('<br>');
+
+  return `
+  <div class="i-title">請　求　書</div>
+  <div class="i-head">
+    <div class="i-client">
+      <div class="i-cname">${data.client_name ? esc(data.client_name)+'　御中' : '　　　　　　　　　御中'}</div>
+      <div class="i-date">請求日：${dateStr}${data.invoice_number ? '<br>請求番号：'+esc(data.invoice_number) : ''}</div>
+    </div>
+    <div class="i-co">
+      <strong>${CO.name}</strong><br>
+      ${CO.postal}　${CO.addr}<br>
+      ${CO.tel}<br>
+      ${CO.reg}
+    </div>
+  </div>
+  <hr class="i-hr">
+  <p class="i-greet">下記の通り、ご請求申し上げます。</p>
+  <div class="i-totbox">
+    <div class="i-totlbl">合計金額（税込）</div>
+    <div class="i-totamt">${yen(total)}</div>
+  </div>
+  <table class="i-tbl">
+    <thead><tr>
+      <th style="width:46%">品目・摘要</th>
+      <th style="width:10%">数量</th>
+      <th style="width:22%">単価</th>
+      <th style="width:22%">金額</th>
+    </tr></thead>
+    <tbody>${trows}</tbody>
+    <tfoot>
+      <tr><td colspan="2" style="border:.5px solid #aaa"></td><td class="tr" style="border:.5px solid #aaa">小　計</td><td class="tr" style="border:.5px solid #aaa">${yen(sub)}</td></tr>
+      <tr><td colspan="2" style="border:.5px solid #aaa"></td><td class="tr" style="border:.5px solid #aaa">消費税（${Math.round(TAX*100)}%）</td><td class="tr" style="border:.5px solid #aaa">${yen(tax)}</td></tr>
+      <tr><td colspan="2" style="border:.5px solid #aaa"></td><td class="tr" style="border:.5px solid #aaa">合　計</td><td class="tr" style="border:.5px solid #aaa">${yen(total)}</td></tr>
+    </tfoot>
+  </table>
+  <div class="i-bot">
+    <div class="i-bank">
+      <div class="i-sh">【お振込先】</div>
+      <div class="i-bc">${BK.bank}<br>${BK.type}<br>${BK.holder}<br>${BK.rep}</div>
+    </div>
+    <div class="i-notes">
+      <div class="i-sh">【備考】</div>
+      <div class="i-bc">${notesHtml}</div>
+    </div>
+  </div>`;
+}
+
+// ── UI ─────────────────────────────────────────────────────
+const ki  = document.getElementById('ki');
+const kst = document.getElementById('kst');
+const dz  = document.getElementById('drop-zone');
+const fii = document.getElementById('fi');
+const fp  = document.getElementById('fp');
+const fic = document.getElementById('fic');
+const fn  = document.getElementById('fn');
+const fsz = document.getElementById('fsz');
+const frm = document.getElementById('frm');
+const go  = document.getElementById('go');
+const gt  = document.getElementById('gt');
+const st  = document.getElementById('st');
+const ov  = document.getElementById('ov');
+const inv = document.getElementById('inv');
+
+let selFile = null;
+
+// Restore saved key
+const savedKey = localStorage.getItem('inv_api_key');
+if (savedKey) { ki.value = savedKey; kst.textContent='✅ APIキーが保存されています'; kst.className='key-status ok'; }
+
+document.getElementById('ks').onclick = () => {
+  const k = ki.value.trim();
+  if (!k.startsWith('sk-')) { kst.textContent='⚠️ 正しいAPIキーを入力してください（sk- で始まる）'; kst.className='key-status'; return; }
+  localStorage.setItem('inv_api_key', k);
+  kst.textContent = '✅ 保存しました';
+  kst.className = 'key-status ok';
+};
+
+function setFile(f) {
+  selFile = f;
+  fn.textContent  = f.name;
+  fsz.textContent = fmtBytes(f.size);
+  fic.textContent = f.type==='application/pdf' ? '📕' : '🖼️';
+  fp.classList.remove('hidden');
+  go.disabled = false;
+  gt.textContent = '請求書を変換してプレビュー';
+  st.className = 'st';
+}
+function clearFile() {
+  selFile = null; fii.value='';
+  fp.classList.add('hidden');
+  go.disabled = true;
+  gt.textContent = 'ファイルを選択してください';
+  st.className = 'st';
+}
+
+fii.onchange = () => { if (fii.files[0]) setFile(fii.files[0]); };
+frm.onclick  = e  => { e.stopPropagation(); clearFile(); };
+dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', ()=> dz.classList.remove('over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f) { fii.files = e.dataTransfer.files; setFile(f); }
+});
+
+document.querySelectorAll('input[name="mk"]').forEach(r => r.addEventListener('change', () => {
+  document.querySelectorAll('.opt').forEach(l => l.classList.remove('sel'));
+  r.closest('.opt').classList.add('sel');
+}));
+
+go.onclick = async () => {
+  const key = localStorage.getItem('inv_api_key') || ki.value.trim();
+  if (!key) { alert('APIキーを入力してください'); return; }
+  if (!selFile) return;
+  const type = document.querySelector('input[name="mk"]:checked').value;
+
+  go.disabled = true;
+  st.className = 'st load';
+  st.innerHTML = '<div class="spin"></div><span>AIが請求書を解析中です（5〜15秒）…</span>';
+
+  try {
+    const data = await extract(selFile, key);
+    inv.innerHTML = buildInv(data, type);
+    ov.classList.add('vis');
+    st.className = 'st ok';
+    st.textContent = '✅ 変換完了。「PDFとして保存」をクリックして印刷ダイアログからPDF保存してください。';
+  } catch(e) {
+    st.className = 'st err';
+    st.textContent = '❌ ' + e.message;
+  } finally {
+    go.disabled = false;
+  }
+};
+
+document.getElementById('pbtn').onclick = () => window.print();
+document.getElementById('cbtn').onclick = () => ov.classList.remove('vis');
+ov.onclick = e => { if (e.target===ov) ov.classList.remove('vis'); };
+</script>
+</body>
+</html>
