@@ -531,7 +531,7 @@ function buildInv(data, type, overrides) {
   <div class="i-title">請　求　書</div>
   <div class="i-head">
     <div class="i-client">
-      <div class="i-cname">${clientName ? esc(clientName)+'　御中' : '　　　　　　　　　御中'}</div>
+      <div class="i-cname">${clientName ? esc(clientName)+'　'+((/株式会社|有限会社|合同会社|合資会社|合名会社|法人|組合|協会|財団|機構|センター|工業|建設|設備/).test(clientName) ? '御中' : '様') : '　　　　　　　　　御中'}</div>
       <div class="i-date">請求日：${dateStr}${dueStr ? '<br>支払期限：'+dueStr : ''}</div>
     </div>
     <div class="i-co">
