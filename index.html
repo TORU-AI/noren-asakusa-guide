@@ -268,30 +268,30 @@
       .ov-actions { display: none !important; }
       #inv {
         width: 210mm; height: 297mm;
-        padding: 16mm 18mm;
+        padding: 14mm 16mm;
         margin: 0 !important;
         box-shadow: none; box-sizing: border-box;
-        overflow: hidden;
+        overflow: visible;
         display: flex; flex-direction: column;
-        font-size: 10pt; line-height: 1.65;
+        font-size: 10pt; line-height: 1.6;
       }
-      .i-title  { font-size: 26pt; margin-bottom: 10mm; letter-spacing: .35em; }
-      .i-head   { margin-bottom: 8mm; }
+      .i-title  { font-size: 26pt; margin-bottom: 8mm; letter-spacing: .35em; }
+      .i-head   { margin-bottom: 6mm; }
       .i-cname  { font-size: 15pt; margin-bottom: 2mm; }
-      .i-date   { font-size: 9.5pt; line-height: 2; }
-      .i-co     { font-size: 9.5pt; line-height: 1.9; }
+      .i-date   { font-size: 9.5pt; line-height: 1.9; }
+      .i-co     { font-size: 9.5pt; line-height: 1.85; }
       .i-co strong { font-size: 11pt; }
-      .i-hr     { margin: 5mm 0; border-top: 1.5px solid #000; }
-      .i-greet  { margin-bottom: 6mm; font-size: 10pt; }
-      .i-totbox { margin-bottom: 8mm; }
-      .i-totlbl { font-size: 10pt; padding: 4mm 6mm; }
-      .i-totamt { font-size: 22pt; padding: 4mm 6mm; }
+      .i-hr     { margin: 4mm 0; border-top: 1.5px solid #000; }
+      .i-greet  { margin-bottom: 5mm; font-size: 10pt; }
+      .i-totbox { margin-bottom: 6mm; }
+      .i-totlbl { font-size: 10pt; padding: 3.5mm 6mm; }
+      .i-totamt { font-size: 22pt; padding: 3.5mm 6mm; }
       .i-tbl    { font-size: 9.5pt; flex-shrink: 0; margin-bottom: 0; }
-      .i-tbl th { padding: 3mm 3.5mm; border: 1px solid #555 !important; }
-      .i-tbl td { padding: 3mm 3.5mm; border: 1px solid #aaa !important; }
-      .i-bot    { margin-top: auto; padding-top: 6mm; font-size: 9.5pt; }
-      .i-bank, .i-notes { padding: 4mm 5mm; }
-      .i-sh     { padding: 2mm 3mm; margin-bottom: 2mm; }
+      .i-tbl th { padding: 2.5mm 3mm; border: 1px solid #555 !important; }
+      .i-tbl td { padding: 2.5mm 3mm; border: 1px solid #aaa !important; }
+      .i-bot    { margin-top: auto; padding-top: 5mm; font-size: 9.5pt; }
+      .i-bank, .i-notes { padding: 3.5mm 4.5mm; }
+      .i-sh     { padding: 1.5mm 3mm; margin-bottom: 1.5mm; }
     }
   </style>
 </head>
@@ -559,7 +559,7 @@ function buildInv(data, type, overrides, docType) {
   const kanriPct   = type === 'kanri30' ? 30 : 20;
   const titleText  = isEstimate ? '見　積　書' : '請　求　書';
   const rows = [...all];
-  while (rows.length < 5) rows.push(null);
+  while (rows.length < 3) rows.push(null);
 
   const trows = rows.map(i => i
     ? `<tr><td class="tl">${esc(i.description)}</td><td class="tc">${Math.round(i.quantity)}</td><td class="tr">${yen(i.unit_price)}</td><td class="tr">${yen(i.amount)}</td></tr>`
