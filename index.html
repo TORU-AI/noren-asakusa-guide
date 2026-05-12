@@ -127,6 +127,12 @@
     }
     .fg input:focus { outline: none; border-color: #0f3460; }
 
+    /* Doc type toggle */
+    .doc-toggle { display: flex; border: 1.5px solid #e0e4eb; border-radius: 8px; overflow: hidden; margin-bottom: 4px; }
+    .doc-toggle label { flex: 1; text-align: center; padding: 10px; cursor: pointer; font-size: .95rem; font-weight: 700; color: #555; transition: background .15s, color .15s; }
+    .doc-toggle input { display: none; }
+    .doc-toggle label.sel { background: #0f3460; color: #fff; }
+
     /* Options */
     .opts { display: flex; flex-direction: column; gap: 12px; }
     .opt {
@@ -309,6 +315,10 @@
   <!-- Step 2 -->
   <div class="card">
     <div class="card-title"><span class="step">2</span>請求先・日付を入力</div>
+    <div class="doc-toggle">
+      <label id="lbl-inv" class="sel"><input type="radio" name="doctype" value="invoice" checked/> 請求書</label>
+      <label id="lbl-est"><input type="radio" name="doctype" value="estimate"/> 見積書</label>
+    </div>
     <div class="fields">
       <div class="fg">
         <label>宛名（御中）</label>
@@ -511,11 +521,15 @@ async function extract(file, key) {
 }
 
 // ── Invoice HTML builder ───────────────────────────────────
-function buildInv(data, type, overrides) {
+function buildInv(data, type, overrides, docType) {
   const { all, sub, tax, total } = markup(data.items||[], type);
   const clientName = overrides.clientName || data.client_name || '';
   const dateStr    = overrides.invoiceDate ? fmtDate(overrides.invoiceDate) : (data.invoice_date ? fmtDate(data.invoice_date) : today());
   const dueStr     = overrides.dueDate ? fmtDate(overrides.dueDate) : '';
+  const isEstimate = docType === 'estimate';
+  const isKanri    = type === 'kanri' || type === 'kanri30';
+  const kanriPct   = type === 'kanri30' ? 30 : 20;
+  const titleText  = isEstimate ? '見　積　書' : '請　求　書';
   const rows = [...all];
   while (rows.length < 5) rows.push(null);
 
@@ -527,7 +541,7 @@ function buildInv(data, type, overrides) {
   const notesHtml = ['振り込み手数料はご負担ください', data.notes&&esc(data.notes)].filter(Boolean).join('<br>');
 
   return `
-  <div class="i-title">請　求　書</div>
+  <div class="i-title">${titleText}</div>
   <div class="i-head">
     <div class="i-client">
       <div class="i-cname">${clientName ? esc(clientName)+'　'+((/株式会社|有限会社|合同会社|合資会社|合名会社|法人|組合|協会|財団|機構|センター|工業|建設|設備/).test(clientName) ? '御中' : '様') : '　　　　　　　　　御中'}</div>
@@ -561,10 +575,18 @@ function buildInv(data, type, overrides) {
     </tfoot>
   </table>
   <div class="i-bot">
-    <div class="i-bank">
-      <div class="i-sh">【お振込先】</div>
-      <div class="i-bc">${BK.bank}<br>${BK.type}<br>${BK.holder}<br>${BK.rep}</div>
-    </div>
+    ${isEstimate
+      ? (isKanri
+          ? `<div class="i-bank">
+               <div class="i-sh">【現場管理費について】</div>
+               <div class="i-bc">現場管理費は工事費の${kanriPct}%です。<br>以下の業務が含まれます。<br>・現場監督・施工管理<br>・安全管理・近隣対応<br>・工程管理・職人手配・調整<br>・廃材処分・現場清掃管理<br>・書類作成・報告業務</div>
+             </div>`
+          : `<div class="i-bank" style="border-right:none;flex:0 0 0"></div>`)
+      : `<div class="i-bank">
+           <div class="i-sh">【お振込先】</div>
+           <div class="i-bc">${BK.bank}<br>${BK.type}<br>${BK.holder}<br>${BK.rep}</div>
+         </div>`
+    }
     <div class="i-notes">
       <div class="i-sh">【備考】</div>
       <div class="i-bc">${notesHtml}</div>
@@ -579,6 +601,11 @@ const cinp = document.getElementById('client-name');
 const dinp = document.getElementById('invoice-date');
 const duei = document.getElementById('due-date');
 const dz   = document.getElementById('drop-zone');
+
+document.querySelectorAll('input[name="doctype"]').forEach(r => r.addEventListener('change', () => {
+  document.querySelectorAll('.doc-toggle label').forEach(l => l.classList.remove('sel'));
+  r.closest('label').classList.add('sel');
+}));
 const fii = document.getElementById('fi');
 const fp  = document.getElementById('fp');
 const fic = document.getElementById('fic');
@@ -660,7 +687,8 @@ go.onclick = async () => {
       invoiceDate: dinp.value,
       dueDate:     duei.value
     };
-    inv.innerHTML = buildInv(data, type, overrides);
+    const docType = document.querySelector('input[name="doctype"]:checked').value;
+    inv.innerHTML = buildInv(data, type, overrides, docType);
     ov.classList.add('vis');
     st.className = 'st ok';
     st.textContent = '✅ 変換完了。「PDFとして保存」をクリックして印刷ダイアログからPDF保存してください。';
