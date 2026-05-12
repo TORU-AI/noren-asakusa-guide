@@ -406,11 +406,46 @@ async function toBase64(file) {
   });
 }
 
+async function compressImage(file) {
+  return new Promise((res,rej) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const MAX = 2048;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else       { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      let quality = 0.85;
+      let dataUrl = c.toDataURL('image/jpeg', quality);
+      while (dataUrl.length > 3_500_000 && quality > 0.4) {
+        quality -= 0.1;
+        dataUrl = c.toDataURL('image/jpeg', quality);
+      }
+      res(dataUrl.split(',')[1]);
+    };
+    img.onerror = rej;
+    img.src = url;
+  });
+}
+
 async function extract(file, key) {
-  const b64 = await toBase64(file);
+  let b64, mediaType;
+  if (file.type === 'application/pdf') {
+    b64 = await toBase64(file);
+    mediaType = 'application/pdf';
+  } else {
+    b64 = await compressImage(file);
+    mediaType = 'image/jpeg';
+  }
   const part = file.type === 'application/pdf'
-    ? { type:'document', source:{ type:'base64', media_type:'application/pdf', data:b64 } }
-    : { type:'image',    source:{ type:'base64', media_type:file.type, data:b64 } };
+    ? { type:'document', source:{ type:'base64', media_type:mediaType, data:b64 } }
+    : { type:'image',    source:{ type:'base64', media_type:mediaType, data:b64 } };
 
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -586,3 +621,4 @@ ov.onclick = e => { if (e.target===ov) ov.classList.remove('vis'); };
 </script>
 </body>
 </html>
+
